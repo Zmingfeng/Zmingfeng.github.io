@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="张明锋的个人博客">
 <meta property="og:description" content="使用requests获取网页源码1.分析浏览器访问网页的过程 首先选择 http://www.chsi.com.cn/cet/ 进行四六级的查询，查看浏览器提交的表单，然后发现，实际网址就是 http://www.chsi.com.cn/cet/query 后面加上输入的准考证号，和姓名，故选择 http://www.chsi.com.cn/cet/query 作为访问基址。 2.查看46级成绩所">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-10T13:17:21.577Z">
+<meta property="og:updated_time" content="2018-03-12T11:30:32.448Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="爬取四六级成绩查询系统">
 <meta name="twitter:description" content="使用requests获取网页源码1.分析浏览器访问网页的过程 首先选择 http://www.chsi.com.cn/cet/ 进行四六级的查询，查看浏览器提交的表单，然后发现，实际网址就是 http://www.chsi.com.cn/cet/query 后面加上输入的准考证号，和姓名，故选择 http://www.chsi.com.cn/cet/query 作为访问基址。 2.查看46级成绩所">
@@ -362,7 +362,7 @@
 <p>content属性代表返回的是bytes型的网页文件。</p>
 <h2 id="使用BeautifulSoup进行网页解析"><a href="#使用BeautifulSoup进行网页解析" class="headerlink" title="使用BeautifulSoup进行网页解析"></a>使用BeautifulSoup进行网页解析</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">tag_tmp = BeautifulSoup(data, <span class="string">'lxml'</span>)</span><br><span class="line">m = tag_tmp.find(id=<span class="string">'leftH'</span>).find(<span class="string">'table'</span>)</span><br><span class="line">y = m.find_all(<span class="string">'tr'</span>)</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> y:</span><br><span class="line">    <span class="keyword">if</span> x.find(<span class="string">'td'</span>) != <span class="keyword">None</span>:</span><br><span class="line">        print(x.find(<span class="string">'th'</span>).get_text().strip() + x.find(<span class="string">'td'</span>).get_text().strip())</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">' '</span> * <span class="number">3</span> + x.find(<span class="string">'th'</span>).get_text().strip())</span><br></pre></td></tr></table></figure>
 <p>将获取的四六级成绩所在的页面源码提交给BeautifulSoup进行网页解析，分析得到的信息再通过一定的格式组合，就可以打印出来查询的个人信息和四六级成绩了。</p>
-<p>源码：<a href="https://github.com/xycg-sky/Python3/blob/master/Crawler/Get46Score/Get46Score.py" target="_blank" rel="noopener">Get46Score.py</a></p>
+<p>源码：<a href="https://github.com/Zmingfeng/Crawler/blob/master/Get46Score/Get46Score.py" target="_blank" rel="noopener">Get46Score.py</a></p>
 
       
     </div>
