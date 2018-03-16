@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="张明锋的个人博客">
 <meta property="og:description" content="首先声明，本次爬取的是华北科技学院的课程表，在其他学校不一定适用。 基础知识补充1.requestsrequests是一个强大的第三方库，可以很大的简化抓取网页的步骤，只要传递几个参数，就能抓取到期望的页面。具体使用，可以参考:Requests快速上手 2.Beautiful SoupBeautiful Soup 是一个可以从HTML或XML文件中提取数据的Python库.它能够通过你喜欢的转换器">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-12T11:36:35.438Z">
+<meta property="og:updated_time" content="2018-03-16T07:25:42.862Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="爬取需要验证码的课程表">
 <meta name="twitter:description" content="首先声明，本次爬取的是华北科技学院的课程表，在其他学校不一定适用。 基础知识补充1.requestsrequests是一个强大的第三方库，可以很大的简化抓取网页的步骤，只要传递几个参数，就能抓取到期望的页面。具体使用，可以参考:Requests快速上手 2.Beautiful SoupBeautiful Soup 是一个可以从HTML或XML文件中提取数据的Python库.它能够通过你喜欢的转换器">
@@ -365,7 +365,7 @@
 <h2 id="分析post返回的网页"><a href="#分析post返回的网页" class="headerlink" title="分析post返回的网页"></a>分析post返回的网页</h2><p>通过分析post返回的网页，可以得到课程表的图片地址，接着get就行了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">x = BeautifulSoup(r.text,<span class="string">'lxml'</span>).find(<span class="string">'img'</span>)</span><br><span class="line">header[<span class="string">'Accept'</span>] = <span class="string">'*/*'</span></span><br><span class="line">header[<span class="string">'Referer'</span>] = <span class="string">'http://jwgl.ncist.edu.cn/ZNPK/KBFB_ClassSel_rpt.aspx'</span></span><br><span class="line">url = <span class="string">'http://jwgl.ncist.edu.cn/ZNPK/'</span> + x[<span class="string">'src'</span>]</span><br><span class="line">r = requests.get(url,headers=header,cookies=cookies)</span><br><span class="line">jpg = Image.open(BytesIO(r.content))</span><br><span class="line">jpg.show()</span><br><span class="line">judge = input(<span class="string">'是否保存图片（y/n）'</span>)</span><br><span class="line"><span class="keyword">if</span> judge == <span class="string">'Y'</span> <span class="keyword">or</span> judge == <span class="string">'y'</span>:</span><br><span class="line">    jpg.save(<span class="string">"./out.jpg"</span>, <span class="string">"jpeg"</span>)</span><br></pre></td></tr></table></figure></p>
 <p>至此，课程表的获取工作已经完成。</p>
 <p>注意：图片是二进制文件。</p>
-<p>源码：<a href="https://github.com/Zmingfeng/Crawler/blob/master/GetClassTable/GetClassTable.py" target="_blank" rel="noopener">GetClassTable.py</a></p>
+<p>源码：<a href="https://github.com/Zmingfeng/Python3/blob/master/GetClassTable.py" target="_blank" rel="noopener">GetClassTable.py</a></p>
 
       
     </div>
