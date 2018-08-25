@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[数据结构的基本概念]]></title>
+    <url>%2F2018%2F08%2F25%2F%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%2F</url>
+    <content type="text"><![CDATA[本篇内容旨在对数据结构的基本概念及术语进行介绍，并从全局的角度对数据结构有一个大体的认识。 数据结构的基本术语数据的组成数据：信息的载体，是描述客观事物属性的数、字符以及所有能输入到计算机中并被计算机程序识别和处理的符号的集合。 数据项：构成数据元素不可分割的最小单位。 数据元素：数据的基本单位，通常作为一个整体，一个个的数据元素就组成了数据（一个数据元素含有多个数据项）。 数据对象：数据的一个子集，它是同一类数据元素的集合。 例：一个班级可以看作是数据对象，它由一个个学生组成，学生记录可以看作是一类数据元素，学生的学号、姓名、性别可以看成是数据项。 数据类型原子类型：其值不可分割的数据类型； 结构类型：其值可以分成若干个结构类型或者原子类型的数据类型； 抽象数据类型：是指一个数学模型以及定义在模型上的一组操作，其定义仅仅取决于其逻辑特性，而与计算机的内部实现无关。 数据结构的组成数据结构是相互之间存在一种或多种特定关系的数据元素的集合，其包括三个方面：逻辑结构、存储结构以及数据的运算。 逻辑结构：数据元素之间的逻辑关系，独立于计算机，跟数据存储无关。 存储结构：数据结构在计算机中的表示，包括数据元素的表示和关系的表示，存储结构是逻辑结构用计算机语言的实现，依赖于计算机语言。 数据的运算：运算的定义是针对逻辑结构的，指出了运算的功能；运算的实现是针对存储结构的，指出了运算的具体步骤。 下图是数据结构的组织逻辑图：]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[浅析C++中的引用]]></title>
     <url>%2F2018%2F03%2F17%2F%E6%B5%85%E6%9E%90C-%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%2F</url>
     <content type="text"><![CDATA[为已定义变量创建别名定义变量时，在变量前加上‘&amp;’符号，就表示定义一个引用。首先声明，引用只是为引用对象创建了别名，而并未开辟新的内存。先看下面一段代码：123456double i = 42.0;double &amp;r = i;std::cout &lt;&lt; "the value of i is " &lt;&lt; i &lt;&lt; std::endl;std::cout &lt;&lt; "the value of r is " &lt;&lt; r &lt;&lt; std::endl;std::cout &lt;&lt; "the address of i is "&lt;&lt; &amp;i &lt;&lt; std::endl;std::cout &lt;&lt; "the address of r is " &lt;&lt; &amp;r &lt;&lt; std::endl; 定义一个double类型的变量，并对其进行同类型引用，输出如下：1234the value of i is 42the value of r is 42the address of i is 0x7ffcf8119c88the address of r is 0x7ffcf8119c88 可以看到，不仅指向的字面值相等，其内存地址也相等。 非const引用的限制非const引用只能进行同类型引用，否则编译器会报错比如：12double i = 42.0;int &amp;r = i; 运行程序，会报错：1234In function ‘int main()’:error: invalid initialization of non-const reference of type ‘int&amp;’ from an rvalue of type ‘int’ int &amp;r = i; ^ 其实这样也无可厚非，毕竟非const引用，可以改变引用对象，而不同类型的修改，会产生无法预料的错误。 同理，非const引用也不可用于右值初始化，因为字面值常量是不可更改的。 const引用值得注意的细节const引用既可用于同类型，也可用于不同类型，也可用于字面值常量。在const引用应用于不同类型的引用时会创建中间变量，也就是说该引用并非是指向你想要指向的引用对象了。示例如下:123456double i = 42.0;const int &amp;r = i;std::cout &lt;&lt; "the value of i is " &lt;&lt; i &lt;&lt; std::endl;std::cout &lt;&lt; "the value of r is " &lt;&lt; r &lt;&lt; std::endl;std::cout &lt;&lt; "the address of i is "&lt;&lt; &amp;i &lt;&lt; std::endl;std::cout &lt;&lt; "the address of r is " &lt;&lt; &amp;r &lt;&lt; std::endl; 最终会输出不同的内存地址：1234the value of i is 42the value of r is 42the address of i is 0x7ffc1a38a528the address of r is 0x7ffc1a38a524 也就是说，其实在引用时进行了如下操作：123double i = 42.0;int temp = i;const int &amp;r = temp; 补充虽然不能对变量的const引用，不能通过引用改变被引用对象的内容，但却可以通过被引用对象自己来修改其值。如下：1234567double i = 42.0;const double &amp;r = i;i = 50.0;std::cout &lt;&lt; "the value of i is " &lt;&lt; i &lt;&lt; std::endl;std::cout &lt;&lt; "the value of r is " &lt;&lt; r &lt;&lt; std::endl;std::cout &lt;&lt; "the address of i is "&lt;&lt; &amp;i &lt;&lt; std::endl;std::cout &lt;&lt; "the address of r is " &lt;&lt; &amp;r &lt;&lt; std::endl; 输出结果如下：1234the value of i is 50the value of r is 50the address of i is 0x7fff7d83b988the address of r is 0x7fff7d83b988 可以看到通过被引用对象将两者的内容都改变了。 对引用的一些分析就谈到这里咯，如有不对，还望指正！]]></content>
