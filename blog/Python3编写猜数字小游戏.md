@@ -1,0 +1,64 @@
+---
+title: Python3编写猜数字小游戏
+date: 2018-03-16 14:57:06
+tags: Python3
+categories: Python3
+
+---
+
+## 生成神秘数字序列
+ 
+### 导入random模块
+```python
+import random 
+```
+### 使用range()生成0-9的序列，并使用random模块将其随机化
+```python
+def getSecretNum():
+	numbers = list(range(10))
+	random.shuffle(numbers)
+	secretNum = ''
+	for i in range(NUM_LENGTH):
+		secretNum += str(numbers[i])
+	return secretNum
+```
+random模块的shuffle方法可将输入的原序列替换成随机序列。
+## 对玩家输入的序列进行处理
+### 根据玩家输入的序列给出相应的提示
+```python
+def getClues(guess,secretNum):
+	# return a string made up of Pico,Fermi,Bagels
+	if guess == secretNum:
+		return "Great,you got it!"
+	else:
+		clues = []
+		for i in range(len(guess)):
+			if guess[i] == secretNum[i]:
+				clues.append('Fermi')
+			elif guess[i] in secretNum:
+				clues.append('Pico')
+		if len(clues) == 0:
+			return 'Bagels'
+		clues.sort()
+		return ' '.join(clues)
+```
+### 定义一个参数检查函数，避免出现不正当输入
+```python
+def isOnlyDigits(num):
+	#judge whether the input from gameplayer is true or not
+	if num == '':
+		return False;
+	else:
+		for i in num:
+			if i not in '0 1 2 3 4 5 6 7 8 9'.split():
+				return False
+		return True
+```
+
+源码：[Begals.py](https://github.com/Zmingfeng/Python3/blob/master/Begals.py)
+
+
+
+
+
+
