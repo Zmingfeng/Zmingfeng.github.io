@@ -3,7 +3,6 @@ title: 浅析C++中的引用
 date: 2018-03-17 16:47:30
 tags: C++
 categories: C++
-
 ---
 
 ### 为已定义变量创建别名
@@ -89,5 +88,3 @@ the address of i is 0x7fff7d83b988
 the address of r is 0x7fff7d83b988
 ```
 可以看到通过被引用对象将两者的内容都改变了。
-
-对引用的一些分析就谈到这里咯，如有不对，还望指正！
