@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
-description: ''
+title: feng's blog
+subtitle: 'as a notebook'
+description: '好好学习，天天向上'
 keywords:
-author: John Doe
-language: en
+author: zmingfeng
+language: zh-CN
 timezone: ''
 
 # URL
@@ -62,7 +62,7 @@ index_generator:
   order_by: -date
 
 # Category & Tag
-default_category: uncategorized
+default_category: categorized
 category_map:
 tag_map:
 
@@ -93,11 +93,11 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: ssh://git@github.com:Zmingfeng/Zmingfeng.github.io.git
+  repository: git@github.com:Zmingfeng/Zmingfeng.github.io.git
   branch: master
