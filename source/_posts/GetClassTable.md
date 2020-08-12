@@ -131,6 +131,3 @@ if judge == 'Y' or judge == 'y':
 至此，课程表的获取工作已经完成。
 
 注意：图片是二进制文件。
-
-源码：[GetClassTable.py](https://github.com/Zmingfeng/Python3/blob/master/GetClassTable.py)
-

@@ -57,6 +57,3 @@ for x in y:
         print(' ' * 3 + x.find('th').get_text().strip())
 ```
 将获取的四六级成绩所在的页面源码提交给BeautifulSoup进行网页解析，分析得到的信息再通过一定的格式组合，就可以打印出来查询的个人信息和四六级成绩了。
-
-源码：[Get46Score.py](https://github.com/Zmingfeng/Python3/blob/master/Get46Score.py)
-
