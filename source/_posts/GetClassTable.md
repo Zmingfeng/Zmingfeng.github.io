@@ -12,7 +12,8 @@ categories: 爬虫
 1.requests
 requests是一个强大的第三方库，可以很大的简化抓取网页的步骤，只要传递几个参数，就能抓取到期望的页面。
 具体使用，可以参考:[Requests快速上手](http://cn.python-requests.org/zh_CN/latest/user/quickstart.html)
-
+<!-- more -->
+<!-- more -->
 2.Beautiful Soup
 Beautiful Soup 是一个可以从HTML或XML文件中提取数据的Python库.它能够通过你喜欢的转换器实现惯用的文档导航,查找,修改文档的方式.Beautiful Soup会帮你节省数小时甚至数天的工作时间.
 简单来说，Beautiful Soup是个第三方的网页解析库，具体使用方法，参考:[Beautiful Soup 4.4.0 文档](http://beautifulsoup.readthedocs.io/zh_CN/latest/#id12)

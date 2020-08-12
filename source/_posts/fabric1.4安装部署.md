@@ -19,7 +19,8 @@ yum -y remove docker \
               docker-engine-selinux \
               docker-engine
 ```
-
+<!-- more -->
+<!-- more -->
 ### 安装Docker和Docker-compose
 - yum换阿里源
     - 安装一些必要包

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":10,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="注：本文中的int型变量为32位，占四个字节。 本篇内容旨在对指针数组、数组指针、指针函数、函数指针进行总结，也希望能在总结的同时能有更深入的理解。 数组指针数组指针顾名思义是个指针，定义形如(*arr)[n]的一个数组指针，由于()的优先级最高，所以定义的是一个指针，这个指针指向含有n个元素的数组。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="指针数组、数组指针、指针函数、函数指针">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;08&#x2F;28&#x2F;%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84%E3%80%81%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E3%80%81%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0%E3%80%81%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88&#x2F;index.html">
+<meta property="og:site_name" content="feng&#39;s blog">
+<meta property="og:description" content="注：本文中的int型变量为32位，占四个字节。 本篇内容旨在对指针数组、数组指针、指针函数、函数指针进行总结，也希望能在总结的同时能有更深入的理解。 数组指针数组指针顾名思义是个指针，定义形如(*arr)[n]的一个数组指针，由于()的优先级最高，所以定义的是一个指针，这个指针指向含有n个元素的数组。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;arr_p.jpg">
+<meta property="article:published_time" content="2018-08-28T10:03:04.000Z">
+<meta property="article:modified_time" content="2020-08-12T15:43:16.868Z">
+<meta property="article:author" content="zmingfeng">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;arr_p.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2018/08/28/%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84%E3%80%81%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E3%80%81%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0%E3%80%81%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>指针数组、数组指针、指针函数、函数指针 | feng's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">feng's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">as a notebook</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/zmingfeng" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/28/%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84%E3%80%81%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E3%80%81%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0%E3%80%81%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="zmingfeng">
+      <meta itemprop="description" content="学以致用">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="feng's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          指针数组、数组指针、指针函数、函数指针
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-28 18:03:04" itemprop="dateCreated datePublished" datetime="2018-08-28T18:03:04+08:00">2018-08-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-12 23:43:16" itemprop="dateModified" datetime="2020-08-12T23:43:16+08:00">2020-08-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>注：本文中的int型变量为32位，占四个字节。</p>
+<p>本篇内容旨在对指针数组、数组指针、指针函数、函数指针进行总结，也希望能在总结的同时能有更深入的理解。</p>
+<h2 id="数组指针"><a href="#数组指针" class="headerlink" title="数组指针"></a>数组指针</h2><p>数组指针顾名思义是个指针，定义形如<code>(*arr)[n]</code>的一个数组指针，由于<code>()</code>的优先级最高，所以定义的是一个指针，这个指针指向含有n个元素的数组。</p>
+<a id="more"></a>
+<!-- more -->
+<p>可以设计一个程序如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">int</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,</span><br><span class="line">                 <span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,</span><br><span class="line">                 <span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">int</span> (*arr)[<span class="number">4</span>] = a;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"arr = %p\n"</span>,arr);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"a[0][0] = %p\n"</span>,&amp;a[<span class="number">0</span>][<span class="number">0</span>]);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"ADDR(a[0][1]) = %p\n"</span>,&amp;a[<span class="number">0</span>][<span class="number">1</span>]);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"arr[1] = %p\n"</span>,++arr);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"a[1] = %p\n"</span>,a[<span class="number">1</span>]);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行程序后输出结果如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">arr = <span class="number">0x7ffefffb8810</span></span><br><span class="line">a[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0x7ffefffb8810</span></span><br><span class="line">ADDR(a[<span class="number">0</span>][<span class="number">1</span>]) = <span class="number">0x7ffefffb8814</span></span><br><span class="line">arr[<span class="number">1</span>] = <span class="number">0x7ffefffb8820</span></span><br><span class="line">a[<span class="number">1</span>] = <span class="number">0x7ffefffb8820</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，初始化了arr后，其值与数组a[][]的首地址相同，而对arr的自增操作则使其值跳跃了整个数组的长度，该操作等同于二维数组a[][]的行地址加1，而进行如果下标操作a[0][1]，该元素的地址相对于a[0][0]只是增加了四个字节，即一个int型变量的长度。</p>
+<p>我们可以很清晰的从下图理解数组指针：<br><img data-src="/images/arr_p.jpg" alt="数组指针"></p>
+<h2 id="指针数组"><a href="#指针数组" class="headerlink" title="指针数组"></a>指针数组</h2><p>指针数组的概念就相对简单，指针数组是个数组，只不过内部存的元素都是指针类型，由于<code>[]</code>的优先级要高于<code>*</code>，所以该数组的定义形如<code>*arr[n]</code>。</p>
+<p>例子如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">int</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">5</span>,b = <span class="number">10</span>;</span><br><span class="line">  <span class="keyword">int</span> *arr[] = &#123;&amp;a,&amp;b&#125;;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"a = %d,b = %d\n"</span>,*(arr[<span class="number">0</span>]),*(arr[<span class="number">1</span>]));</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序输出结果如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">5</span>,b = <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>数组指针没有什么难度，只是用数组去存指针而已。</p>
+<h2 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h2><p>函数指针其实在编程中相当有用，我们可以将函数的形参声明为函数指针，从而可以将函数的地址传入。</p>
+<p>函数作为参数传递跟变量传递一样有两种方式：值传递，地址传递。但是值传递有一个不好之处在于太占用空间，假设在A函数中声明一个形如B函数的形参，而非形如B函数的函数指针，那么将B函数作为参数传入时，就要分配整个B函数的空间给该参数，而函数指针则只会传入一个地址。那么还有一个问题，在函数内部进行函数调用也是一样，而且不会进行值传递，但是在函数内部进行调用，不够灵活，同一类函数可以实现的功能不一样，形如B函数的函数功能和函数名可能有所不同，而每次调用不同的函数时都要去改变A函数未免太不方便，所以才要把函数地址当作参数进行传入。</p>
+<p>设计一个程序如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp_min</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x &lt; y?x:y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp_max</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x &gt; y?x:y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> (*compare)(<span class="keyword">int</span>,<span class="keyword">int</span>))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (*compare)(x,y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">int</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">5</span>,b = <span class="number">10</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"the min of a,b is %d\n"</span>,cmp(a,b,cmp_min));</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输入结果如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">the <span class="built_in">min</span> of a,b is <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p>值得一提的是，函数指针是一个指针，我们不能在声明函数指针的同时进行函数的定义，因为我们只是声明一个指针，我们只能声明一个函数指针，然后用一个定义过的函数去对该指针进行初始化，就像下面这样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp_min</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x &lt; y?x:y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">int</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">5</span>,b = <span class="number">6</span>;</span><br><span class="line">  <span class="keyword">int</span> (*compare)(<span class="keyword">int</span>,<span class="keyword">int</span>) = cmp_min;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"the min of a,b is %d\n"</span>,(*compare)(a,b));</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果跟上面一样。</p>
+<p>其实函数指针可以和指针数组结合起来使用，我们都知道函数名单独使用其实是一个地址，所以可以将其作为指针存于指针数组中，通过数组对其进行访问。</p>
+<p>例子如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp_min</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x &lt; y?x:y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp_max</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x &gt; y?x:y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> (**compare)(<span class="keyword">int</span>,<span class="keyword">int</span>))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"the min of a,b is %d\n"</span>,(*compare[<span class="number">0</span>])(x,y));</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"the max of a,b is %d\n"</span>,(*compare[<span class="number">1</span>])(x,y));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">int</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">5</span>,b = <span class="number">10</span>;</span><br><span class="line">  <span class="keyword">int</span> (*arr[])(<span class="keyword">int</span>,<span class="keyword">int</span>) = &#123;cmp_min,cmp_max&#125;;</span><br><span class="line">  cmp(a,b,arr);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">the <span class="built_in">min</span> of a,b is <span class="number">5</span></span><br><span class="line">the <span class="built_in">max</span> of a,b is <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>在<code>cmp(int x,int y,int (**compare)(int,int))</code>中声明的函数形参使用了指针的指针，因为我们传入的是是数组的地址，需要先解引用获得数组内的函数地址，所以使用了指针的指针，也可以使用另一种形式：<code>*compare[](int,int)</code>，效果等同；如果我们在传参时使用了数组下标，则可以不用如此声明，直接声明为<code>cmp(int x,int y,int (*compare)(int,int))</code>即可。</p>
+<h2 id="指针函数"><a href="#指针函数" class="headerlink" title="指针函数"></a>指针函数</h2><p>指针函数是个函数，只不过返回值是个指针类型，这也是一个比较简单的概念，就像变量返回一样，指针函数的定义形如<code>*func()</code>。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/08/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="prev" title="数据结构及算法分析学习笔记">
+      <i class="fa fa-chevron-left"></i> 数据结构及算法分析学习笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/22/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%85%A5%E9%97%A8/" rel="next" title="区块链入门">
+      区块链入门 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组指针"><span class="nav-number">1.</span> <span class="nav-text">数组指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指针数组"><span class="nav-number">2.</span> <span class="nav-text">指针数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数指针"><span class="nav-number">3.</span> <span class="nav-text">函数指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指针函数"><span class="nav-number">4.</span> <span class="nav-text">指针函数</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zmingfeng"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">zmingfeng</p>
+  <div class="site-description" itemprop="description">学以致用</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zmingfeng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zmingfeng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xycg_sky@163.com" title="E-Mail → mailto:xycg_sky@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zmingfeng</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

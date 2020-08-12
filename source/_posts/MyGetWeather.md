@@ -13,6 +13,8 @@ python的优势在于有着各种各样功能强大的标准库和第三方库�
 ```python
 import requests
 ```
+<!-- more -->
+<!-- more -->
 2.抓取百度天气网页源码
 ```python
 url = 'http://www.baidutianqi.com/'

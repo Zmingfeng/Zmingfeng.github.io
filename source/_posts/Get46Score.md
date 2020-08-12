@@ -10,7 +10,8 @@ categories: 爬虫
 1.分析浏览器访问网页的过程
 
 首先选择 http://www.chsi.com.cn/cet/ 进行四六级的查询，查看浏览器提交的表单，然后发现，实际网址就是 http://www.chsi.com.cn/cet/query 后面加上输入的准考证号，和姓名，故选择 http://www.chsi.com.cn/cet/query 作为访问基址。
-
+<!-- more -->
+<!-- more -->
 2.查看46级成绩所在页面的源码
 ```python
 import requests

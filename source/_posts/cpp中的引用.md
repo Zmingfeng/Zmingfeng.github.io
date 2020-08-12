@@ -18,9 +18,8 @@ categories: C++
         std::cout << "the address of r is " << &r << std::endl;
 
 ```
-
-
-
+<!-- more -->
+<!-- more -->
 定义一个double类型的变量，并对其进行同类型引用，输出如下：
 ```C++
 the value of i is 42
