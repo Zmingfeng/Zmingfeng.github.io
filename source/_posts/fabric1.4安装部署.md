@@ -1,3 +1,10 @@
+---
+title: fabric1.4安装部署
+date: 2020-03-17 16:47:30
+tags: 区块链
+categories: 区块链
+---
+
 **注意：** 本文基于CentOS7，由于docker镜像较大，确保磁盘空间充足
 ### 卸载已安装的Docker
 ```
@@ -12,6 +19,7 @@ yum -y remove docker \
               docker-engine-selinux \
               docker-engine
 ```
+
 ### 安装Docker和Docker-compose
 - yum换阿里源
     - 安装一些必要包
@@ -143,6 +151,7 @@ yum -y remove docker \
     ```
     go version
     ```
+
 ### 环境配置
 - 安装node.js(主要是根据官方文档运行第一个程序用的javascripts)
 
@@ -170,22 +179,18 @@ yum -y remove docker \
         nvm ls-remote
         ```
     
-        
-
     - 按照指定版本的node
 
         ```
         nvm install <version>
         ```
 
-        
-
     - 查看是否安装成功
 
         ```
         node -v 
         npm -v
-    ```
+        ```
     
     
     
@@ -321,6 +326,7 @@ yum -y remove docker \
         ./byfn.sh -m up
         ```
         若是未出现error，则证明成功运行，可以运行```./byfn.sh -m down```命令关闭网络。
+
 ### 跑通JavaScript样例
 - 进入样例中的```fabcar```目录
     ```
