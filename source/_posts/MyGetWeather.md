@@ -105,10 +105,6 @@ def send_email(content):
 ```
 首先导入了email和stmplib库，然后定义了一个sned_email()函数，mail_to代表目标邮箱，mail_server是你的邮箱服务器，例如163邮箱是"smtp.163.com"，mail_user和mail_pass是你的邮箱和密码。
 
-源码：[MyGetWeather.py](https://github.com/Zmingfeng/Python3/blob/master/MyGetWeather.py)
-
-
-
 
 
 
