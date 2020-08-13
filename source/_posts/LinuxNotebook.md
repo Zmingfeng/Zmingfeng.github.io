@@ -1,10 +1,11 @@
 ---
 title: Linux使用笔记
 date: 2020-08-13 22:58:47
-tags: Linux
+tags: 
+    - Linux 
+    - npm
 categories: Linux
 ---
-
 
 # 创建sudo和ssh用户
 
