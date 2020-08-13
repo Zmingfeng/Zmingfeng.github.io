@@ -127,17 +127,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">5</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">6</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">9</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-commonweal">
@@ -225,26 +225,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="为已定义变量创建别名"><a href="#为已定义变量创建别名" class="headerlink" title="为已定义变量创建别名"></a>为已定义变量创建别名</h3><p>定义变量时，在变量前加上‘&amp;’符号，就表示定义一个引用。首先声明，引用只是为引用对象创建了别名，而并未开辟新的内存。<br>先看下面一段代码：</p>
+        <h3><span id="为已定义变量创建别名">为已定义变量创建别名</span></h3><p>定义变量时，在变量前加上‘&amp;’符号，就表示定义一个引用。首先声明，引用只是为引用对象创建了别名，而并未开辟新的内存。<br>先看下面一段代码：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">double</span> &amp;r = i;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the value of i is "</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the value of r is "</span> &lt;&lt; r &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the address of i is "</span>&lt;&lt; &amp;i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the address of r is "</span> &lt;&lt; &amp;r &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <!-- more -->
 <p>定义一个double类型的变量，并对其进行同类型引用，输出如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">the value of i is <span class="number">42</span></span><br><span class="line">the value of r is <span class="number">42</span></span><br><span class="line">the address of i is <span class="number">0x7ffcf8119c88</span></span><br><span class="line">the address of r is <span class="number">0x7ffcf8119c88</span></span><br></pre></td></tr></table></figure>
 <p>可以看到，不仅指向的字面值相等，其内存地址也相等。</p>
-<h3 id="非const引用的限制"><a href="#非const引用的限制" class="headerlink" title="非const引用的限制"></a>非const引用的限制</h3><p>非const引用只能进行同类型引用，否则编译器会报错<br>比如：</p>
+<h3><span id="非const引用的限制">非const引用的限制</span></h3><p>非const引用只能进行同类型引用，否则编译器会报错<br>比如：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">int</span> &amp;r = i;</span><br></pre></td></tr></table></figure>
 <p>运行程序，会报错：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In function ‘int main()’:</span><br><span class="line">error: invalid initialization of non-<span class="keyword">const</span> reference of type ‘<span class="keyword">int</span>&amp;’ from an rvalue of type ‘<span class="keyword">int</span>’</span><br><span class="line">  <span class="keyword">int</span> &amp;r = i;</span><br><span class="line">           ^</span><br></pre></td></tr></table></figure>
 <p>其实这样也无可厚非，毕竟非const引用，可以改变引用对象，而不同类型的修改，会产生无法预料的错误。</p>
 <p>同理，非const引用也不可用于右值初始化，因为字面值常量是不可更改的。</p>
-<h3 id="const引用值得注意的细节"><a href="#const引用值得注意的细节" class="headerlink" title="const引用值得注意的细节"></a>const引用值得注意的细节</h3><p>const引用既可用于同类型，也可用于不同类型，也可用于字面值常量。在const引用应用于不同类型的引用时会创建中间变量，也就是说该引用并非是指向你想要指向的引用对象了。<br>示例如下:</p>
+<h3><span id="const引用值得注意的细节">const引用值得注意的细节</span></h3><p>const引用既可用于同类型，也可用于不同类型，也可用于字面值常量。在const引用应用于不同类型的引用时会创建中间变量，也就是说该引用并非是指向你想要指向的引用对象了。<br>示例如下:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r = i;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the value of i is "</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the value of r is "</span> &lt;&lt; r &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the address of i is "</span>&lt;&lt; &amp;i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the address of r is "</span> &lt;&lt; &amp;r &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 <p>最终会输出不同的内存地址：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">the value of i is <span class="number">42</span></span><br><span class="line">the value of r is <span class="number">42</span></span><br><span class="line">the address of i is <span class="number">0x7ffc1a38a528</span></span><br><span class="line">the address of r is <span class="number">0x7ffc1a38a524</span></span><br></pre></td></tr></table></figure>
 <p>也就是说，其实在引用时进行了如下操作：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">int</span> temp = i;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r = temp;</span><br></pre></td></tr></table></figure>
-<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><p>虽然不能对变量的const引用，不能通过引用改变被引用对象的内容，但却可以通过被引用对象自己来修改其值。<br>如下：</p>
+<h3><span id="补充">补充</span></h3><p>虽然不能对变量的const引用，不能通过引用改变被引用对象的内容，但却可以通过被引用对象自己来修改其值。<br>如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> &amp;r = i;</span><br><span class="line">i = <span class="number">50.0</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the value of i is "</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the value of r is "</span> &lt;&lt; r &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the address of i is "</span>&lt;&lt; &amp;i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the address of r is "</span> &lt;&lt; &amp;r &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 <p>输出结果如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">the value of i is <span class="number">50</span></span><br><span class="line">the value of r is <span class="number">50</span></span><br><span class="line">the address of i is <span class="number">0x7fff7d83b988</span></span><br><span class="line">the address of r is <span class="number">0x7fff7d83b988</span></span><br></pre></td></tr></table></figure>
@@ -332,7 +332,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#为已定义变量创建别名"><span class="nav-number">1.</span> <span class="nav-text">为已定义变量创建别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非const引用的限制"><span class="nav-number">2.</span> <span class="nav-text">非const引用的限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const引用值得注意的细节"><span class="nav-number">3.</span> <span class="nav-text">const引用值得注意的细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#补充"><span class="nav-number">4.</span> <span class="nav-text">补充</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">为已定义变量创建别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">2.</span> <span class="nav-text">非const引用的限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">3.</span> <span class="nav-text">const引用值得注意的细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">4.</span> <span class="nav-text">补充</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -348,20 +348,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

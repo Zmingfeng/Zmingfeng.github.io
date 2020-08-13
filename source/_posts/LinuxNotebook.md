@@ -1,5 +1,5 @@
 ---
-title: LinuxNotebook
+title: Linux使用笔记
 date: 2020-08-13 22:58:47
 tags: Linux
 categories: Linux
