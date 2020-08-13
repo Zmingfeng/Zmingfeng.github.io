@@ -127,17 +127,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">5</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">6</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">9</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-commonweal">
@@ -225,8 +225,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="requests-BeautifulSoup抓取百度天气上的天气预报"><a href="#requests-BeautifulSoup抓取百度天气上的天气预报" class="headerlink" title="requests+BeautifulSoup抓取百度天气上的天气预报"></a>requests+BeautifulSoup抓取百度天气上的天气预报</h2><p>python的优势在于有着各种各样功能强大的标准库和第三方库，使得十分简洁的python代码便可以实现相对复杂的功能，首先先了解以下利用requests抓取网页</p>
-<h3 id="使用requests模块抓取网页"><a href="#使用requests模块抓取网页" class="headerlink" title="使用requests模块抓取网页"></a>使用requests模块抓取网页</h3><p>1.导入requests库</p>
+        <h2><span id="requestsbeautifulsoup抓取百度天气上的天气预报">requests+BeautifulSoup抓取百度天气上的天气预报</span></h2><p>python的优势在于有着各种各样功能强大的标准库和第三方库，使得十分简洁的python代码便可以实现相对复杂的功能，首先先了解以下利用requests抓取网页</p>
+<h3><span id="使用requests模块抓取网页">使用requests模块抓取网页</span></h3><p>1.导入requests库</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <!-- more -->
@@ -235,7 +235,7 @@
 <p>抓取到的网页是bytes型，想要得到字符型，就像下面这样把content换成text就行：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">url = <span class="string">'http://www.baidutianqi.com/'</span></span><br><span class="line">html = requests.get(url).text</span><br></pre></td></tr></table></figure>
 <p>requests的用法很简单，可以参考：<a href="http://cn.python-requests.org/zh_CN/latest/user/quickstart.html" target="_blank" rel="noopener">requests官方文档</a></p>
-<h3 id="利用BeautifulSoup解析网页获取天气信息"><a href="#利用BeautifulSoup解析网页获取天气信息" class="headerlink" title="利用BeautifulSoup解析网页获取天气信息"></a>利用BeautifulSoup解析网页获取天气信息</h3><p>1.导入BeautifulSoup库</p>
+<h3><span id="利用beautifulsoup解析网页获取天气信息">利用BeautifulSoup解析网页获取天气信息</span></h3><p>1.导入BeautifulSoup库</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br></pre></td></tr></table></figure>
 <p>2.利用BeautifulSoup解析网页</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tag_tmp = BeautifulSoup(html,<span class="string">'lxml'</span>)</span><br><span class="line">provinceInfo = tag_tmp.find(id=<span class="string">'provinces'</span>).find(<span class="string">'ul'</span>).find_all(<span class="string">'li'</span>)</span><br></pre></td></tr></table></figure>
@@ -248,7 +248,7 @@
 <p>想了解BeautifulSoup的具体用法，参考：<a href="http://beautifulsoup.readthedocs.io/zh_CN/latest/" target="_blank" rel="noopener">BeautifulSoup官方文档</a><br>3.对获取的城市天气所在链接进行处理</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cityIn = <span class="string">'上海'</span></span><br><span class="line">    <span class="keyword">if</span> cityIn <span class="keyword">in</span> weather.keys():</span><br><span class="line">        html = requests.get(weather[cityIn]).content</span><br><span class="line">        weather_tmp = BeautifulSoup(html, <span class="string">'lxml'</span>)</span><br><span class="line">        weather7days = weather_tmp.find(id=<span class="string">"weather"</span>).find(<span class="string">'ul'</span>).find_all(<span class="string">'li'</span>)</span><br><span class="line">        day = weather7days[<span class="number">0</span>]</span><br><span class="line">        l_tmp = day.get_text().split(<span class="string">' '</span>)</span><br><span class="line">        w = l_tmp[<span class="number">0</span>].strip()</span><br><span class="line">        x = l_tmp[<span class="number">2</span>].strip() + l_tmp[<span class="number">3</span>].strip()</span><br><span class="line">        y = x.split(<span class="string">'℃'</span>)[<span class="number">0</span>].strip() + <span class="string">'℃'</span></span><br><span class="line">        z = x.split(<span class="string">'℃'</span>)[<span class="number">1</span>].strip()</span><br><span class="line">        print(w+<span class="string">'\n'</span>+y+<span class="string">'\n'</span>+z + <span class="string">'\n'</span> + <span class="string">'-'</span>*<span class="number">20</span>)</span><br></pre></td></tr></table></figure>
 <p>weather7days字存放的是连续七天的天气预报的tag组成的list，用day = weather7days[0]获取今天天气预报的tag，day.get_text()获取tag中天气文本（温度，风级，阴晴等），接下来就是文本分离部分，不同网站的天气格式略有不同，可以根据不同的网站，使用不同的分离方法。</p>
-<h2 id="使用smtplib-email发送邮件"><a href="#使用smtplib-email发送邮件" class="headerlink" title="使用smtplib+email发送邮件"></a>使用smtplib+email发送邮件</h2><p>email模块用于生成邮件，而smtplib模块用于发送邮件，具体代码如下：</p>
+<h2><span id="使用smtplibemail发送邮件">使用smtplib+email发送邮件</span></h2><p>email模块用于生成邮件，而smtplib模块用于发送邮件，具体代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> email.mime.text <span class="keyword">import</span> MIMEText</span><br><span class="line"><span class="keyword">import</span> smtplib</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send_email</span><span class="params">(content)</span>:</span></span><br><span class="line">    mail_to = <span class="string">"目标邮箱"</span></span><br><span class="line">    mail_server = <span class="string">"源邮箱服务器"</span></span><br><span class="line">    mail_user = <span class="string">"源邮箱"</span></span><br><span class="line">    mail_pass = <span class="string">"源邮箱密码"</span></span><br><span class="line">    msg = MIMEText(content)</span><br><span class="line">    msg[<span class="string">'Subject'</span>] = <span class="string">'今日天气预报'</span></span><br><span class="line">    msg[<span class="string">'From'</span>] = mail_user</span><br><span class="line">    msg[<span class="string">'To'</span>] = mail_to</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        s = smtplib.SMTP()</span><br><span class="line">        s.connect(mail_server)</span><br><span class="line">        s.login(mail_user, mail_pass)</span><br><span class="line">        s.sendmail(mail_user, mail_to, msg.as_string())</span><br><span class="line">        s.close()</span><br><span class="line">        print(<span class="string">'发送成功！'</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">'发送失败！'</span>)</span><br><span class="line">        print(e)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
 <p>首先导入了email和stmplib库，然后定义了一个sned_email()函数，mail_to代表目标邮箱，mail_server是你的邮箱服务器，例如163邮箱是”smtp.163.com”，mail_user和mail_pass是你的邮箱和密码。</p>
 
@@ -334,7 +334,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#requests-BeautifulSoup抓取百度天气上的天气预报"><span class="nav-number">1.</span> <span class="nav-text">requests+BeautifulSoup抓取百度天气上的天气预报</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用requests模块抓取网页"><span class="nav-number">1.1.</span> <span class="nav-text">使用requests模块抓取网页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用BeautifulSoup解析网页获取天气信息"><span class="nav-number">1.2.</span> <span class="nav-text">利用BeautifulSoup解析网页获取天气信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用smtplib-email发送邮件"><span class="nav-number">2.</span> <span class="nav-text">使用smtplib+email发送邮件</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">requests+BeautifulSoup抓取百度天气上的天气预报</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">1.1.</span> <span class="nav-text">使用requests模块抓取网页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">1.2.</span> <span class="nav-text">利用BeautifulSoup解析网页获取天气信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#null"><span class="nav-number">2.</span> <span class="nav-text">使用smtplib+email发送邮件</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -350,20 +350,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

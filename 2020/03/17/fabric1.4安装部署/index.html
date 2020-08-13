@@ -127,17 +127,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">5</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">6</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">9</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-commonweal">
@@ -226,10 +226,10 @@
 
       
         <p><strong>注意：</strong> 本文基于CentOS7，由于docker镜像较大，确保磁盘空间充足</p>
-<h3 id="卸载已安装的Docker"><a href="#卸载已安装的Docker" class="headerlink" title="卸载已安装的Docker"></a>卸载已安装的Docker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">yum -y remove docker \</span><br><span class="line">              docker-client \</span><br><span class="line">              docker-client-latest \</span><br><span class="line">              docker-common \</span><br><span class="line">              docker-latest \</span><br><span class="line">              docker-latest-logrotate \</span><br><span class="line">              docker-logrotate \</span><br><span class="line">              docker-selinux \</span><br><span class="line">              docker-engine-selinux \</span><br><span class="line">              docker-engine</span><br></pre></td></tr></table></figure>
+<h3><span id="卸载已安装的docker">卸载已安装的Docker</span></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">yum -y remove docker \</span><br><span class="line">              docker-client \</span><br><span class="line">              docker-client-latest \</span><br><span class="line">              docker-common \</span><br><span class="line">              docker-latest \</span><br><span class="line">              docker-latest-logrotate \</span><br><span class="line">              docker-logrotate \</span><br><span class="line">              docker-selinux \</span><br><span class="line">              docker-engine-selinux \</span><br><span class="line">              docker-engine</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <!-- more -->
-<h3 id="安装Docker和Docker-compose"><a href="#安装Docker和Docker-compose" class="headerlink" title="安装Docker和Docker-compose"></a>安装Docker和Docker-compose</h3><ul>
+<h3><span id="安装docker和docker-compose">安装Docker和Docker-compose</span></h3><ul>
 <li><p>yum换阿里源</p>
 <ul>
 <li>安装一些必要包  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install wget curl vim git gcc-c++</span><br></pre></td></tr></table></figure></li>
@@ -272,7 +272,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="Go安装（1-13-5）"><a href="#Go安装（1-13-5）" class="headerlink" title="Go安装（1.13.5）"></a>Go安装（1.13.5）</h3><ul>
+<h3><span id="go安装1135">Go安装（1.13.5）</span></h3><ul>
 <li>首先官网下载go安装包  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;dl.google.com&#x2F;go&#x2F;go1.13.5.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
   <strong>如若下载不了也可以直接用帮区里面的文件</strong></li>
 <li>解压到目录<code>/usr/local</code>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -C &#x2F;usr&#x2F;local -xzf go1.13.5.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure></li>
@@ -284,7 +284,7 @@
 
 </li>
 </ul>
-<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><ul>
+<h3><span id="环境配置">环境配置</span></h3><ul>
 <li><p>安装node.js(主要是根据官方文档运行第一个程序用的javascripts)</p>
 <ul>
 <li><p>​    安装nvm(第一种方法，需要梯子)</p>
@@ -377,7 +377,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="跑通JavaScript样例"><a href="#跑通JavaScript样例" class="headerlink" title="跑通JavaScript样例"></a>跑通JavaScript样例</h3><ul>
+<h3><span id="跑通javascript样例">跑通JavaScript样例</span></h3><ul>
 <li><p>进入样例中的<code>fabcar</code>目录</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ..&#x2F;fabcar</span><br></pre></td></tr></table></figure>
 </li>
@@ -394,21 +394,21 @@
 <p>  <strong>注：</strong> 如果出现error，可能是<code>nodejs</code>版本不对，可以试试<code>10.18.1</code>,运行命令可加上<code>--build-from-source</code>参数再次尝试（先删除当前目录下的<code>node_modules</code>目录,因为此步骤安装的模块都放在该目录中，不删除重新进行依然会出错！！！）</p>
 </li>
 <li><p>接着就可按照<code>https://hyperledger-fabric.readthedocs.io/en/release-1.4/write_first_app.html</code>的教程中的内容往下进行测试（接着<code>npm install</code>之后）</p>
-<h2 id="ubuntu下安装docker-ce和docker-compose"><a href="#ubuntu下安装docker-ce和docker-compose" class="headerlink" title="ubuntu下安装docker-ce和docker-compose"></a>ubuntu下安装docker-ce和docker-compose</h2><h4 id="卸载原有docker-engine"><a href="#卸载原有docker-engine" class="headerlink" title="卸载原有docker engine"></a>卸载原有docker engine</h4>  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove docker \</span><br><span class="line">docker-engine \</span><br><span class="line">docker.io</span><br></pre></td></tr></table></figure>
+<h2><span id="ubuntu下安装docker-ce和docker-compose">ubuntu下安装docker-ce和docker-compose</span></h2><h4><span id="卸载原有docker-engine">卸载原有docker engine</span></h4>  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove docker \</span><br><span class="line">docker-engine \</span><br><span class="line">docker.io</span><br></pre></td></tr></table></figure>
 
-<h4 id="添加ubuntu软件源密钥"><a href="#添加ubuntu软件源密钥" class="headerlink" title="添加ubuntu软件源密钥"></a>添加ubuntu软件源密钥</h4>  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+<h4><span id="添加ubuntu软件源密钥">添加ubuntu软件源密钥</span></h4>  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
 
-<h4 id="添加https传输的软件包以及ca证书"><a href="#添加https传输的软件包以及ca证书" class="headerlink" title="添加https传输的软件包以及ca证书"></a>添加https传输的软件包以及ca证书</h4>  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line"></span><br><span class="line">sudo apt-get install \</span><br><span class="line">apt-transport-https \</span><br><span class="line">ca-certificates \</span><br><span class="line">curl \</span><br><span class="line">software-properties-common</span><br></pre></td></tr></table></figure>
+<h4><span id="添加https传输的软件包以及ca证书">添加https传输的软件包以及ca证书</span></h4>  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line"></span><br><span class="line">sudo apt-get install \</span><br><span class="line">apt-transport-https \</span><br><span class="line">ca-certificates \</span><br><span class="line">curl \</span><br><span class="line">software-properties-common</span><br></pre></td></tr></table></figure>
 
-<h4 id="向source-list添加Docker软件源"><a href="#向source-list添加Docker软件源" class="headerlink" title="向source.list添加Docker软件源"></a>向source.list添加Docker软件源</h4>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository \</span><br><span class="line"><span class="string">"deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu  bionic stable"</span></span><br></pre></td></tr></table></figure>
+<h4><span id="向sourcelist添加docker软件源">向source.list添加Docker软件源</span></h4>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository \</span><br><span class="line"><span class="string">"deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu  bionic stable"</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="更新软件源并安装的docker-ce"><a href="#更新软件源并安装的docker-ce" class="headerlink" title="更新软件源并安装的docker-ce"></a>更新软件源并安装的docker-ce</h4>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 更新apt-get，并进行安装</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install docker-ce</span><br></pre></td></tr></table></figure>
+<h4><span id="更新软件源并安装的docker-ce">更新软件源并安装的docker-ce</span></h4>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 更新apt-get，并进行安装</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install docker-ce</span><br></pre></td></tr></table></figure>
 
-<h4 id="添加docker用户组防止出现Unix-socket-与-Docker-引擎通讯权限不足的问题"><a href="#添加docker用户组防止出现Unix-socket-与-Docker-引擎通讯权限不足的问题" class="headerlink" title="添加docker用户组防止出现Unix socket 与 Docker 引擎通讯权限不足的问题"></a>添加docker用户组防止出现Unix socket 与 Docker 引擎通讯权限不足的问题</h4>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 建立 docker 组：</span><br><span class="line">sudo groupadd docker</span><br><span class="line">// 将当前用户加入 docker 组：</span><br><span class="line">sudo gpasswd -a <span class="variable">$USER</span> docker</span><br></pre></td></tr></table></figure>
+<h4><span id="添加docker用户组防止出现unix-socket-与-docker-引擎通讯权限不足的问题">添加docker用户组防止出现Unix socket 与 Docker 引擎通讯权限不足的问题</span></h4>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 建立 docker 组：</span><br><span class="line">sudo groupadd docker</span><br><span class="line">// 将当前用户加入 docker 组：</span><br><span class="line">sudo gpasswd -a <span class="variable">$USER</span> docker</span><br></pre></td></tr></table></figure>
 
-<h4 id="启动并测试是否安装成功"><a href="#启动并测试是否安装成功" class="headerlink" title="启动并测试是否安装成功"></a>启动并测试是否安装成功</h4>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br><span class="line">sudo systemctl start docker</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+<h4><span id="启动并测试是否安装成功">启动并测试是否安装成功</span></h4>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br><span class="line">sudo systemctl start docker</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
 
-<h4 id="安装docker-compose"><a href="#安装docker-compose" class="headerlink" title="安装docker-compose"></a>安装docker-compose</h4>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L <span class="string">"https://github.com/docker/compose/releases/download/1.25.5/docker-compose-<span class="variable">$(uname -s)</span>-<span class="variable">$(uname -m)</span>"</span> -o /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"></span><br><span class="line">sudo chmod +x /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"></span><br><span class="line"><span class="comment">#测试安装是否成功</span></span><br><span class="line">$ docker-compose --version</span><br><span class="line">docker-compose version 1.25.5, build 1110ad01</span><br></pre></td></tr></table></figure></li>
+<h4><span id="安装docker-compose">安装docker-compose</span></h4>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L <span class="string">"https://github.com/docker/compose/releases/download/1.25.5/docker-compose-<span class="variable">$(uname -s)</span>-<span class="variable">$(uname -m)</span>"</span> -o /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"></span><br><span class="line">sudo chmod +x /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"></span><br><span class="line"><span class="comment">#测试安装是否成功</span></span><br><span class="line">$ docker-compose --version</span><br><span class="line">docker-compose version 1.25.5, build 1110ad01</span><br></pre></td></tr></table></figure></li>
 </ul>
 
     </div>
@@ -431,7 +431,10 @@
     <a href="/2020/01/22/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%85%A5%E9%97%A8/" rel="prev" title="区块链入门">
       <i class="fa fa-chevron-left"></i> 区块链入门
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/13/LinuxNotebook/" rel="next" title="LinuxNotebook">
+      LinuxNotebook <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -490,7 +493,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#卸载已安装的Docker"><span class="nav-number">1.</span> <span class="nav-text">卸载已安装的Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Docker和Docker-compose"><span class="nav-number">2.</span> <span class="nav-text">安装Docker和Docker-compose</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go安装（1-13-5）"><span class="nav-number">3.</span> <span class="nav-text">Go安装（1.13.5）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-number">4.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跑通JavaScript样例"><span class="nav-number">5.</span> <span class="nav-text">跑通JavaScript样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ubuntu下安装docker-ce和docker-compose"><span class="nav-number"></span> <span class="nav-text">ubuntu下安装docker-ce和docker-compose</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#卸载原有docker-engine"><span class="nav-number">0.1.</span> <span class="nav-text">卸载原有docker engine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加ubuntu软件源密钥"><span class="nav-number">0.2.</span> <span class="nav-text">添加ubuntu软件源密钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加https传输的软件包以及ca证书"><span class="nav-number">0.3.</span> <span class="nav-text">添加https传输的软件包以及ca证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向source-list添加Docker软件源"><span class="nav-number">0.4.</span> <span class="nav-text">向source.list添加Docker软件源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新软件源并安装的docker-ce"><span class="nav-number">0.5.</span> <span class="nav-text">更新软件源并安装的docker-ce</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加docker用户组防止出现Unix-socket-与-Docker-引擎通讯权限不足的问题"><span class="nav-number">0.6.</span> <span class="nav-text">添加docker用户组防止出现Unix socket 与 Docker 引擎通讯权限不足的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动并测试是否安装成功"><span class="nav-number">0.7.</span> <span class="nav-text">启动并测试是否安装成功</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装docker-compose"><span class="nav-number">0.8.</span> <span class="nav-text">安装docker-compose</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">卸载已安装的Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">2.</span> <span class="nav-text">安装Docker和Docker-compose</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">3.</span> <span class="nav-text">Go安装（1.13.5）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">4.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">5.</span> <span class="nav-text">跑通JavaScript样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#null"><span class="nav-number"></span> <span class="nav-text">ubuntu下安装docker-ce和docker-compose</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">0.1.</span> <span class="nav-text">卸载原有docker engine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">0.2.</span> <span class="nav-text">添加ubuntu软件源密钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">0.3.</span> <span class="nav-text">添加https传输的软件包以及ca证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">0.4.</span> <span class="nav-text">向source.list添加Docker软件源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">0.5.</span> <span class="nav-text">更新软件源并安装的docker-ce</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">0.6.</span> <span class="nav-text">添加docker用户组防止出现Unix socket 与 Docker 引擎通讯权限不足的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">0.7.</span> <span class="nav-text">启动并测试是否安装成功</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">0.8.</span> <span class="nav-text">安装docker-compose</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -506,20 +509,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
