@@ -45,11 +45,11 @@ categories: algorithm
 1. 依次选择一个字母从右向左看， 出现在其左边的字母代表的整数：
 
    - 若是小于该字母代表的整数，就加上左边字母代表的数字；
-   - 若是大于该字母代表的整数，就减掉左边字母代表的数字；
+   - 若是大于等于该字母代表的整数，就减掉左边字母代表的数字；
 
 2. 依次选择一个字母从左向右看，当前字母代表的数字：
 
-   - 若是大于其右边字母代表的数字，就加上当前字母代表的数字；
+   - 若是大于等于其右边字母代表的数字，就加上当前字母代表的数字；
    - 若是小于其右边字母代表的数字，就减去当前字母代表的数字。
 
    两种方式表达了同样的意思，不论如何，对于最右边字母，由于出现在最右边，所以永远会加上该字母代表的数字。
@@ -62,10 +62,9 @@ int romanToInt(string s) {
     map<char, int> RomanToInteger{
         {'I', 1}, {'V', 5}, {'X', 10}, {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}
     };
-    cout << s[2] << endl;
     for (int i = 0; i < s.length() - 1; ++i){
         // 采用从左向右看（更易懂）
-        RomanToInteger[s[i]] > RomanToInteger[s[i+1]] ? output_number += RomanToInteger[s[i]] : output_number -= RomanToInteger[s[i]];
+        RomanToInteger[s[i]] < RomanToInteger[s[i+1]] ? output_number -= RomanToInteger[s[i]] : output_number += RomanToInteger[s[i]];
     }
     // 由于用两种方式都不会在循环时加上最右边字母表示的数字，所以在循环外要加上
     output_number += RomanToInteger[s[s.length() -1]];
