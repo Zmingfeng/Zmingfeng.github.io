@@ -7,6 +7,7 @@ tags:
 categories: Linux
 ---
 
+
 # 创建sudo和ssh用户
 
 ## 创建用户并设置sudo权限
@@ -35,4 +36,12 @@ npm config set registry https://registry.npm.taobao.org
 ```
 
 
+
+# 在Windows下使用vscode搭建vscode环境
+
+基础步骤按照VSCode的C/C++扩展的document就可以，在json中使用系统环境变量可以使用以下方式：
+
+```json
+${env:系统中设置的环境变量名}
+```
 
