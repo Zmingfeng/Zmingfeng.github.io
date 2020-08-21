@@ -19,7 +19,8 @@ categories: deeplearning
 采用自适应学习率的梯度下降方法不需要对参数进行归一化，因为会根据不同scale的梯度进行学习率的缩放，最终稳步达到lLocal optimal
 
 # 梯度下降优化方法
-
+<!--more-->
+<!--more-->
 ## RMSprop算法
 
 采用EMA（指数移动平均）来计算每次更新的梯度，公式如下：
