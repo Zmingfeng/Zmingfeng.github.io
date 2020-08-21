@@ -217,11 +217,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1><span id="训练技巧">训练技巧</span></h1><h2><span id="模型参数初始化">模型参数初始化</span></h2><h3><span id="普通梯度下降法sgdbatch梯度下降">普通梯度下降法（SGD,Batch梯度下降）</span></h3><p>使用普通的梯度下降方法时，初始化模型时对参数进行归一化，以防止不同参数的scale不一样，部分参数在同等学习率下无法更新</p>
-<h3><span id="自适应学习率梯度下降法法动量法rmsprop算法adam算法">自适应学习率梯度下降法法（动量法，RMSprop算法，Adam算法）</span></h3><p>采用自适应学习率的梯度下降方法不需要对参数进行归一化，因为会根据不同scale的梯度进行学习率的缩放，最终稳步达到lLocal optimal</p>
-<h1><span id="梯度下降优化方法">梯度下降优化方法</span></h1><a id="more"></a>
+          <h1 id="训练技巧">训练技巧</h1>
+<h2 id="模型参数初始化">模型参数初始化</h2>
+<h3 id="普通梯度下降法sgdbatch梯度下降">普通梯度下降法（SGD,Batch梯度下降）</h3>
+<p>使用普通的梯度下降方法时，初始化模型时对参数进行归一化，以防止不同参数的scale不一样，部分参数在同等学习率下无法更新</p>
+<h3 id="自适应学习率梯度下降法法动量法rmsprop算法adam算法">自适应学习率梯度下降法法（动量法，RMSprop算法，Adam算法）</h3>
+<p>采用自适应学习率的梯度下降方法不需要对参数进行归一化，因为会根据不同scale的梯度进行学习率的缩放，最终稳步达到lLocal optimal</p>
+<h1 id="梯度下降优化方法">梯度下降优化方法</h1>
+<a id="more"></a>
 <!--more-->
-<h2><span id="rmsprop算法">RMSprop算法</span></h2><p>采用EMA（指数移动平均）来计算每次更新的梯度，公式如下：</p>
+<h2 id="rmsprop算法">RMSprop算法</h2>
+<p>采用EMA（指数移动平均）来计算每次更新的梯度，公式如下：</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/08/21/deeplearning/#more" rel="contents">
@@ -302,13 +308,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1><span id="jupyter-notebook基础设置">jupyter-notebook基础设置</span></h1><h2><span id="使用pip进行安装">使用pip进行安装</span></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install jupyter</span><br></pre></td></tr></table></figure>
-
-<h2><span id="生成配置文件">生成配置文件</span></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter-notebook --generate-config</span><br></pre></td></tr></table></figure>
-
-<h2><span id="生成密码">生成密码</span></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter-notebook password # 输入密码后会生成到一个json文件，等下复制到~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-
-<h2><span id="配置~jupyterjupyter_notebook_configpy">配置~/.jupyter/jupyter_notebook_config.py</span></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">c.NotebookApp.ip=<span class="string">'*'</span>   <span class="comment"># “*”代表非本机都可以访问</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.allow_remote_access = <span class="literal">True</span> <span class="comment"># 若是非本机访问，还需开启远程访问</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.open_browser = <span class="literal">False</span>    <span class="comment"># 服务器上不需要启动浏览器</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.notebook_dir = <span class="string">'~/jupyter_workspace'</span>    <span class="comment"># 指定notebook服务的默认打开目录</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.port = <span class="number">8888</span> <span class="comment"># 默认服务端口</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.password = <span class="string">u'encrypted_password'</span> <span class="comment"># encrypted_password是刚才生成的密码</span></span><br></pre></td></tr></table></figure>
+          <h1 id="jupyter-notebook基础设置">jupyter-notebook基础设置</h1>
+<h2 id="使用pip进行安装">使用pip进行安装</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install jupyter</span><br></pre></td></tr></table></figure>
+<h2 id="生成配置文件">生成配置文件</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter-notebook --generate-config</span><br></pre></td></tr></table></figure>
+<h2 id="生成密码">生成密码</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter-notebook password # 输入密码后会生成到一个json文件，等下复制到~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+<h2 id="配置.jupyterjupyter_notebook_config.py">配置~/.jupyter/jupyter_notebook_config.py</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">c.NotebookApp.ip=<span class="string">'*'</span>   <span class="comment"># “*”代表非本机都可以访问</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.allow_remote_access = <span class="literal">True</span> <span class="comment"># 若是非本机访问，还需开启远程访问</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.open_browser = <span class="literal">False</span>    <span class="comment"># 服务器上不需要启动浏览器</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.notebook_dir = <span class="string">'~/jupyter_workspace'</span>    <span class="comment"># 指定notebook服务的默认打开目录</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.port = <span class="number">8888</span> <span class="comment"># 默认服务端口</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.password = <span class="string">u'encrypted_password'</span> <span class="comment"># encrypted_password是刚才生成的密码</span></span><br></pre></td></tr></table></figure>
 <a id="more"></a>
           <!--noindex-->
             <div class="post-button">
@@ -390,7 +398,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1><span id="关于autograd包">关于Autograd包</span></h1><p>创建Tensor时默认其require_grad属性是False（例子如下）， 不会参与梯度计算。</p>
+          <h1 id="关于autograd包">关于Autograd包</h1>
+<p>创建Tensor时默认其require_grad属性是False（例子如下）， 不会参与梯度计算。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Tensor构造器</span></span><br><span class="line">torch.tensor(data, dtype=<span class="literal">None</span>, device=<span class="literal">None</span>, requires_grad=<span class="literal">False</span>, pin_memory=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <!--more-->
@@ -475,45 +484,49 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="罗马数字转整数（C-）"><a href="#罗马数字转整数（C-）" class="headerlink" title="罗马数字转整数（C++）"></a>罗马数字转整数（C++）</h1><h2 id="问题描述-转自leetcode官网"><a href="#问题描述-转自leetcode官网" class="headerlink" title="问题描述(转自leetcode官网)"></a>问题描述(转自leetcode官网)</h2><p>罗马数字包含以下七种字符: <code>I</code>， <code>V</code>， <code>X</code>， <code>L</code>，<code>C</code>，<code>D</code> 和 <code>M</code>。</p>
+          <h1 id="罗马数字转整数c">罗马数字转整数（C++）</h1>
+<h2 id="问题描述转自leetcode官网">问题描述(转自leetcode官网)</h2>
+<p>罗马数字包含以下七种字符: <code>I</code>， <code>V</code>， <code>X</code>， <code>L</code>，<code>C</code>，<code>D</code> 和 <code>M</code>。</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>字符</th>
 <th>数值</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td>I</td>
 <td>1</td>
 </tr>
-<tr>
+<tr class="even">
 <td>V</td>
 <td>5</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>X</td>
 <td>10</td>
 </tr>
-<tr>
+<tr class="even">
 <td>L</td>
 <td>50</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>C</td>
 <td>100</td>
 </tr>
-<tr>
+<tr class="even">
 <td>D</td>
 <td>500</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>M</td>
 <td>1000</td>
 </tr>
-</tbody></table>
-<p>例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</p>
-<p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</p>
+</tbody>
+</table>
+<p>例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做 XXVII, 即为 XX + V + II 。</p>
+<p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/08/14/LeetCodeNotebook/#more" rel="contents">
@@ -594,15 +607,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1><span id="创建sudo和ssh用户">创建sudo和ssh用户</span></h1><h2><span id="创建用户并设置sudo权限">创建用户并设置sudo权限</span></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 使用adduer添加用户会在home目录中添加用户，并设置shell环境（/bin/bash），而useradd不会</span></span><br><span class="line">adduser username #username是你要创建的用户名</span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用usermod将新用户添加进sudo用户组</span></span><br><span class="line">usermod -G username sudo # username是刚才新建的用户名</span><br></pre></td></tr></table></figure>
-
-<h2><span id="设置ssh登录权限">设置ssh登录权限</span></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 打开ssh配置文件</span></span><br><span class="line">sudo vim /etc/ssh/sshd_config</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加如下代码行</span></span><br><span class="line">AllowUsers username # username就是刚才新建用户名</span><br></pre></td></tr></table></figure>
-
-<h1><span id="npm换源">npm换源</span></h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 使用一下命令换源</span></span><br><span class="line">npm config set registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-
-
-
-<h1><span id="在windows下使用vscode搭建vscode环境">在Windows下使用vscode搭建vscode环境</span></h1><p>基础步骤按照VSCode的C/C++扩展的document就可以，在json中使用系统环境变量可以使用以下方式：</p>
+          <h1 id="创建sudo和ssh用户">创建sudo和ssh用户</h1>
+<h2 id="创建用户并设置sudo权限">创建用户并设置sudo权限</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 使用adduer添加用户会在home目录中添加用户，并设置shell环境（/bin/bash），而useradd不会</span></span><br><span class="line">adduser username #username是你要创建的用户名</span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用usermod将新用户添加进sudo用户组</span></span><br><span class="line">usermod -G username sudo # username是刚才新建的用户名</span><br></pre></td></tr></table></figure>
+<h2 id="设置ssh登录权限">设置ssh登录权限</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 打开ssh配置文件</span></span><br><span class="line">sudo vim /etc/ssh/sshd_config</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加如下代码行</span></span><br><span class="line">AllowUsers username # username就是刚才新建用户名</span><br></pre></td></tr></table></figure>
+<h1 id="npm换源">npm换源</h1>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 使用一下命令换源</span></span><br><span class="line">npm config set registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<h1 id="在windows下使用vscode搭建vscode环境">在Windows下使用vscode搭建vscode环境</h1>
+<p>基础步骤按照VSCode的C/C++扩展的document就可以，在json中使用系统环境变量可以使用以下方式：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;env:系统中设置的环境变量名&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
@@ -684,8 +697,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>注意：</strong> 本文基于CentOS7，由于docker镜像较大，确保磁盘空间充足</p>
-<h3 id="卸载已安装的Docker"><a href="#卸载已安装的Docker" class="headerlink" title="卸载已安装的Docker"></a>卸载已安装的Docker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">yum -y remove docker \</span><br><span class="line">              docker-client \</span><br><span class="line">              docker-client-latest \</span><br><span class="line">              docker-common \</span><br><span class="line">              docker-latest \</span><br><span class="line">              docker-latest-logrotate \</span><br><span class="line">              docker-logrotate \</span><br><span class="line">              docker-selinux \</span><br><span class="line">              docker-engine-selinux \</span><br><span class="line">              docker-engine</span><br></pre></td></tr></table></figure>
+          <p><strong>注意：</strong> 本文基于CentOS7，由于docker镜像较大，确保磁盘空间充足 ### 卸载已安装的Docker <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">yum -y remove docker \</span><br><span class="line">              docker-client \</span><br><span class="line">              docker-client-latest \</span><br><span class="line">              docker-common \</span><br><span class="line">              docker-latest \</span><br><span class="line">              docker-latest-logrotate \</span><br><span class="line">              docker-logrotate \</span><br><span class="line">              docker-selinux \</span><br><span class="line">              docker-engine-selinux \</span><br><span class="line">              docker-engine</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/03/17/fabric1.4%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/#more" rel="contents">
@@ -757,11 +769,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+          <h3 id="特性">特性</h3>
+<ul>
 <li>hiding</li>
 <li>collision resistance</li>
 </ul>
-<h3 id="两种数据结构"><a href="#两种数据结构" class="headerlink" title="两种数据结构"></a>两种数据结构</h3><ul>
+<h3 id="两种数据结构">两种数据结构</h3>
+<ul>
 <li>hash链</li>
 <li>merkle树（B+树）
           <!--noindex-->
@@ -846,7 +860,8 @@
       
           <p>注：本文中的int型变量为32位，占四个字节。</p>
 <p>本篇内容旨在对指针数组、数组指针、指针函数、函数指针进行总结，也希望能在总结的同时能有更深入的理解。</p>
-<h2 id="数组指针"><a href="#数组指针" class="headerlink" title="数组指针"></a>数组指针</h2><p>数组指针顾名思义是个指针，定义形如<code>(*arr)[n]</code>的一个数组指针，由于<code>()</code>的优先级最高，所以定义的是一个指针，这个指针指向含有n个元素的数组。</p>
+<h2 id="数组指针">数组指针</h2>
+<p>数组指针顾名思义是个指针，定义形如<code>(*arr)[n]</code>的一个数组指针，由于<code>()</code>的优先级最高，所以定义的是一个指针，这个指针指向含有n个元素的数组。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/08/28/%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84%E3%80%81%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E3%80%81%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0%E3%80%81%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/#more" rel="contents">
@@ -927,8 +942,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="数据结构的基本概念"><a href="#数据结构的基本概念" class="headerlink" title="数据结构的基本概念"></a>数据结构的基本概念</h1><p>本篇内容旨在对数据结构的基本概念及术语进行介绍，并从全局的角度对数据结构有一个大体的认识。</p>
-<h2 id="数据结构的基本术语"><a href="#数据结构的基本术语" class="headerlink" title="数据结构的基本术语"></a>数据结构的基本术语</h2><h3 id="数据的组成"><a href="#数据的组成" class="headerlink" title="数据的组成"></a>数据的组成</h3><p><strong>数据：</strong>信息的载体，是描述客观事物属性的数、字符以及所有能输入到计算机中并被计算机程序识别和处理的符号的集合。</p>
+          <h1 id="数据结构的基本概念">数据结构的基本概念</h1>
+<p>本篇内容旨在对数据结构的基本概念及术语进行介绍，并从全局的角度对数据结构有一个大体的认识。</p>
+<h2 id="数据结构的基本术语">数据结构的基本术语</h2>
+<h3 id="数据的组成">数据的组成</h3>
+<p><strong>数据：</strong>信息的载体，是描述客观事物属性的数、字符以及所有能输入到计算机中并被计算机程序识别和处理的符号的集合。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/08/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
@@ -1009,8 +1027,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="为已定义变量创建别名"><a href="#为已定义变量创建别名" class="headerlink" title="为已定义变量创建别名"></a>为已定义变量创建别名</h3><p>定义变量时，在变量前加上‘&amp;’符号，就表示定义一个引用。首先声明，引用只是为引用对象创建了别名，而并未开辟新的内存。<br>先看下面一段代码：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">double</span> &amp;r = i;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the value of i is "</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the value of r is "</span> &lt;&lt; r &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the address of i is "</span>&lt;&lt; &amp;i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the address of r is "</span> &lt;&lt; &amp;r &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+          <h3 id="为已定义变量创建别名">为已定义变量创建别名</h3>
+<p>定义变量时，在变量前加上‘&amp;’符号，就表示定义一个引用。首先声明，引用只是为引用对象创建了别名，而并未开辟新的内存。 先看下面一段代码： <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">double</span> &amp;r = i;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the value of i is "</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the value of r is "</span> &lt;&lt; r &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the address of i is "</span>&lt;&lt; &amp;i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"the address of r is "</span> &lt;&lt; &amp;r &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/03/17/cpp%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/#more" rel="contents">
