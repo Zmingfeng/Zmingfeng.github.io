@@ -1,5 +1,5 @@
 ---
-title: jupyter-notebook使用
+title: jupyter-notebook使用笔记
 date: 2020-08-20 16:15:57
 tags: 
 	- python

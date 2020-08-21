@@ -1,5 +1,5 @@
 ---
-title: LeetCodeNotebook
+title: LeetCode算法笔记
 date: 2020-08-14 15:47:29
 tags: 
 	- leetcode

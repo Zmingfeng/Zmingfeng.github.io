@@ -1,5 +1,5 @@
 ---
-title: pytorhNotebook
+title: pytorch开发笔记
 date: 2020-08-15 11:13:47
 tags:
 	- Pytorch
