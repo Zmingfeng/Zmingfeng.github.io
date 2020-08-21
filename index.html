@@ -194,7 +194,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-08-21 11:39:36 / 修改时间：11:41:25" itemprop="dateCreated datePublished" datetime="2020-08-21T11:39:36+08:00">2020-08-21</time>
+              <time title="创建时间：2020-08-21 11:39:36 / 修改时间：19:56:10" itemprop="dateCreated datePublished" datetime="2020-08-21T11:39:36+08:00">2020-08-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -217,8 +217,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1><span id="调试技巧">调试技巧</span></h1><p>初始化模型时对参数进行归一化（使用adam时不用，因其对参数不敏感）</p>
-
+          <h1><span id="训练技巧">训练技巧</span></h1><h2><span id="模型参数初始化">模型参数初始化</span></h2><h3><span id="普通梯度下降法sgdbatch梯度下降">普通梯度下降法（SGD,Batch梯度下降）</span></h3><p>使用普通的梯度下降方法时，初始化模型时对参数进行归一化，以防止不同参数的scale不一样，部分参数在同等学习率下无法更新</p>
+<h3><span id="自适应学习率梯度下降法法动量法rmsprop算法adam算法">自适应学习率梯度下降法法（动量法，RMSprop算法，Adam算法）</span></h3><p>采用自适应学习率的梯度下降方法不需要对参数进行归一化，因为会根据不同scale的梯度进行学习率的缩放，最终稳步达到lLocal optimal</p>
+<h1><span id="梯度下降优化方法">梯度下降优化方法</span></h1><a id="more"></a>
+<!--more-->
+<h2><span id="rmsprop算法">RMSprop算法</span></h2><p>采用EMA（指数移动平均）来计算每次更新的梯度，公式如下：</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/08/21/deeplearning/#more" rel="contents">
@@ -1240,6 +1243,63 @@
 
 
   
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
