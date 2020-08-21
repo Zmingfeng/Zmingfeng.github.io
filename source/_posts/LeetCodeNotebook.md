@@ -11,7 +11,7 @@ categories: algorithm
 
 # 罗马数字转整数（C++）
 
-## 问题描述(转自leetcode官网)
+## 问题描述(来自leetcode官网)
 
 罗马数字包含以下七种字符: `I`， `V`， `X`， `L`，`C`，`D` 和 `M`。
 
@@ -72,7 +72,45 @@ int romanToInt(string s) {
 }
 ```
 
-[源码]: https://github.com/Zmingfeng/Algorithm/blob/master/CPlusPlus/RomanToInteger.exe
+[源码]: https://github.com/Zmingfeng/Algorithm/blob/master/CPlusPlus/RomanToInteger.cpp
 
+# 找出数组中重复的数字
 
+## 题目：(来自leetcode官网)
+
+在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内。数组中某些数字是重复的，但不知道有几个数字重复了，也不知道每个数字重复了几次。请找出数组中任意一个重复的数字。
+
+## 示例
+
+![](\images\image-20200821214640025.png)
+
+## 思路：
+
+以空间换时间（因为题目里提到数字范围时0~n-1），定义一个跟原数组一样大小的数组，接着遍历原数组，用原数组中的数作为索引给新数组中的元素进行复制，只要有一个元素的值大于2，证明重复，直接返回即可
+
+## 代码：
+
+```c++
+int findRepeatNumber(vector<int> &nums)
+{
+    // 定义一个跟原数组一样大小的数组
+    vector<int> temp_index(nums.size(), 0);
+    // 遍历数组
+    for (auto i = 0; i < nums.size(); ++i)
+    {
+        // 只要元素个数不为0，再次遇到即可返回
+        if (temp_index[nums[i]] > 0)
+        {
+            return nums[i];
+        }
+        else
+        {
+            // 对原数组中的数字进行计数
+            temp_index[nums[i]] += 1;
+        }
+    }
+}
+```
+
+[源码路径]: https://github.com/Zmingfeng/Algorithm/blob/master/CPlusPlus/findRepeatNumber.cpp
 
