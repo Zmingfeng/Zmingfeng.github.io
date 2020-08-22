@@ -44,4 +44,64 @@ npm config set registry https://registry.npm.taobao.org
 ```json
 ${env:系统中设置的环境变量名}
 ```
+<!--more-->
+<!--more-->
+# 显卡驱动卸载及安装（ubuntu16.04）
 
+```shell
+# 禁用图形界面
+sudo service lightdm stop
+# 之前的显卡驱动全部清除，根据提示选yes
+sudo apt-get --purge remove nvidia*
+# 从官网下载驱动（这里以435.21为例，可以从链接中直接替换自己想要的版本）
+wget http://cn.download.nvidia.com/XFree86/Linux-x86_64/435.21/NVIDIA-Linux-x86_64-435.21.run
+# 赋予运行权限
+sudo chmod a+x NVIDIA-Linux-x86_64-435.21.run
+# 运行run文件， 全都按照默认进行选择
+sudo ./NVIDIA-Linux-x86_64-435.21.run
+# 查看是否安装成功
+nvidia-smi
+# 若是上一步显示没有，则进行显卡驱动挂载
+modprobe nvidia
+```
+
+# Cuda对应图
+
+![](\images\image-20200822111634528.png)
+
+# 安装指定Cuda版本的Pytorch
+
+```shell
+conda install pytorch cudatoolkit=10.1 -c pytorch
+```
+
+# 安装多版本Cuda（Pytorch不用）
+
+## 下载安装
+
+[官网下载]: https://developer.nvidia.com/cuda-toolkit-archive
+
+```shell
+# 根据Cuda对应图下载指定版本的cuda，下载runfile文件,这里以10.1为例
+wget https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers/cuda_10.1.105_418.39_linux.run
+# 赋予runfile执行权限
+sudo chmod a+x cuda_10.1.105_418.39_linux.run
+# 执行安装,记住装过驱动了就别装驱动了，选项可以根据自己的需要进行选择
+sudo ./cuda_10.1.105_418.39_linux.run
+# 在用户主目录的.bashrc文件中添加（或修改成）以下两行，将执行库和cuda可执行文件写入环境变量
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.1/lib64
+export PATH=$PATH:/usr/local/cuda-10.1/bin
+```
+
+## 使用软链接更方便切换版本
+
+```shell
+# 先将/usr/bin/cuda软链接指向指定版本
+sudo rm -f /usr/bin/cuda # 删除软链接
+sudo ln -s /usr/bin/cuda /usr/local/cuda-10.1 #重建软链接
+# 修改环境变量如下
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
+export PATH=$PATH:/usr/local/cuda-10.1/bin
+```
+
+每次切换版本只需要重建软链接就可以了
