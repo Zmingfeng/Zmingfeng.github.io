@@ -44,6 +44,10 @@ npm config set registry https://registry.npm.taobao.org
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
 conda config --set show_channel_urls yes
+# 查看镜像源
+conda config --show channels
+# 移除镜像源，source-address就是要移除的源地址
+conda config --remove-key channels source-address
 ```
 
 # pip换源
