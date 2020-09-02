@@ -4,6 +4,8 @@ date: 2020-08-13 22:58:47
 tags: 
     - Linux 
     - npm
+	- conda
+	- python
 categories: Linux
 ---
 
@@ -31,8 +33,25 @@ AllowUsers username # username就是刚才新建用户名
 # npm换源
 
 ```shell
-# 使用一下命令换源
+# 使用一下命令换源，会将配置写入.npmrc
 npm config set registry https://registry.npm.taobao.org
+```
+
+# Conda换源
+
+```shell
+# 会将配置写入.condarc
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config --set show_channel_urls yes
+```
+
+# pip换源
+
+```shell
+# 打开~/.config/pip/pip.conf，并写入以下内容
+[global]
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 
