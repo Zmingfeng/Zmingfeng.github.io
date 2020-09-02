@@ -4,8 +4,8 @@ date: 2020-08-13 22:58:47
 tags: 
     - Linux 
     - npm
-	- conda
-	- python
+    - conda
+    - python
 categories: Linux
 ---
 
