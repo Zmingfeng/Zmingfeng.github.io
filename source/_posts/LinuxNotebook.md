@@ -104,7 +104,7 @@ ${env:系统中设置的环境变量名}
 # 禁用图形界面
 sudo service lightdm stop
 # 之前的显卡驱动全部清除，根据提示选yes
-sudo apt-get --purge remove nvidia*
+sudo apt-get --purge remove nvidia-\*
 # 从官网下载驱动（这里以435.21为例，可以从链接中直接替换自己想要的版本）
 wget http://cn.download.nvidia.com/XFree86/Linux-x86_64/435.21/NVIDIA-Linux-x86_64-435.21.run
 # 赋予运行权限
