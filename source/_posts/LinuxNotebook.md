@@ -9,10 +9,11 @@ tags:
 categories: Linux
 ---
 
+# Linux基础操作
 
-# 创建sudo和ssh用户
+## 创建sudo和ssh用户
 
-## 创建用户并设置sudo权限
+### 创建用户并设置sudo权限
 
 ```shell
 # 使用adduer添加用户会在home目录中添加用户，并设置shell环境（/bin/bash），而useradd不会
@@ -21,7 +22,7 @@ adduser username #username是你要创建的用户名
 usermod -G username sudo # username是刚才新建的用户名
 ```
 
-## 设置ssh登录权限
+### 设置ssh登录权限
 
 ```shell
 # 打开ssh配置文件
@@ -30,14 +31,14 @@ sudo vim /etc/ssh/sshd_config
 AllowUsers username # username就是刚才新建用户名
 ```
 
-# npm换源
+## npm换源
 
 ```shell
 # 使用一下命令换源，会将配置写入.npmrc
 npm config set registry https://registry.npm.taobao.org
 ```
 
-# Conda换源
+## Conda换源
 
 ```shell
 # 会将配置写入.condarc
@@ -50,7 +51,7 @@ conda config --show channels
 conda config --remove-key channels source-address
 ```
 
-# pip换源
+## pip换源
 
 ```shell
 # 打开~/.config/pip/pip.conf，并写入以下内容
@@ -58,7 +59,7 @@ conda config --remove-key channels source-address
 index-url = https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-# ubuntu16.04换源
+## ubuntu16.04换源
 
 ```shell
 # 先备份
@@ -87,18 +88,10 @@ deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restri
 sudo apt update
 ```
 
-
-
-# 在Windows下使用vscode搭建vscode环境
-
-基础步骤按照VSCode的C/C++扩展的document就可以，在json中使用系统环境变量可以使用以下方式：
-
-```json
-${env:系统中设置的环境变量名}
-```
 <!--more-->
 <!--more-->
-# 显卡驱动卸载及安装（ubuntu16.04）
+
+## 显卡驱动卸载及安装（ubuntu16.04）
 
 ```shell
 # 禁用图形界面
@@ -117,19 +110,19 @@ nvidia-smi
 modprobe nvidia
 ```
 
-# Cuda对应图
+## Cuda对应图
 
 ![](\images\image-20200822111634528.png)
 
-# 安装指定Cuda版本的Pytorch
+## 安装指定Cuda版本的Pytorch
 
 ```shell
 conda install pytorch cudatoolkit=10.1 -c pytorch
 ```
 
-# 安装多版本Cuda（Pytorch不用）
+## 安装多版本Cuda（Pytorch不用）
 
-## 下载安装
+### 下载安装
 
 [官网下载]: https://developer.nvidia.com/cuda-toolkit-archive
 
@@ -145,7 +138,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.1/lib64
 export PATH=$PATH:/usr/local/cuda-10.1/bin
 ```
 
-## 使用软链接更方便切换版本
+### 使用软链接更方便切换版本
 
 ```shell
 # 先将/usr/bin/cuda软链接指向指定版本
@@ -156,4 +149,22 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
 export PATH=$PATH:/usr/local/cuda-10.1/bin
 ```
 
-每次切换版本只需要重建软链接就可以了
+每次切换版本只需要重建软链接就可以了。
+
+## 查看系统资源使用状况
+
+### 内存使用状况
+
+- 方式一
+
+  ```shell
+  
+  ```
+
+  
+
+- 方式二
+
+- 方式三
+
+磁盘使用情况
