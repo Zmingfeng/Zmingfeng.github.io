@@ -19,7 +19,11 @@ categories: Linux
 # 使用adduer添加用户会在home目录中添加用户，并设置shell环境（/bin/bash），而useradd不会
 adduser username #username是你要创建的用户名
 # 使用usermod将新用户添加进sudo用户组
-usermod -G username sudo # username是刚才新建的用户名
+usermod -G username su # username是刚才新建的用户名
+# 添加sudo权限
+sudo vim /etc/sudoers
+# 添加如下行
+username ALL=(ALL:ALL) ALL
 ```
 
 ### 设置ssh登录权限
