@@ -13,7 +13,7 @@ timezone: ''
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: https://zmingfeng.github.io/
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -103,5 +103,5 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: https://DEPLOY_TOKEN@github.com:Zmingfeng/Zmingfeng.github.io.git
-  branch: blogPages
+  repository: git@github.com:Zmingfeng/Zmingfeng.github.io.git
+  branch: gh-pages
