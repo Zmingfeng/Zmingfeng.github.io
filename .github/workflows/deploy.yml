@@ -18,7 +18,7 @@ jobs:
 
     - name: Setup Git user info and env
       env:
-        M_GITHUB_PAGES_TOKEN: ${{ secrets.M_GITHUB_PAGES_TOKEN }}
+        M_GITHUB_PAGES_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
       run: |
         git config --global user.email "xycg.sky@gmail.com"
         git config --global user.name "Zmingfeng"
