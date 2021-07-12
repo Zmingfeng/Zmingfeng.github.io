@@ -42,7 +42,7 @@ jobs:
 
       uses: y4code/hexo-deploy-action@master
       env:
-        PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        PERSONAL_TOKEN: DEPLOY_TOKEN     #${{ secrets.ACCESS_TOKEN }}
         PUBLISH_REPOSITORY: zmingfeng/zmingfeng.github.io # The repository the action should deploy to.
         BRANCH: blogPages  # The branch the action should deploy to.
         PUBLISH_DIR: ./public # The folder the action should deploy.
