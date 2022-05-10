@@ -1,0 +1,948 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>浅析C++中的引用</title>
+    <url>/2018/03/17/C++%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="为已定义变量创建别名"><a href="#为已定义变量创建别名" class="headerlink" title="为已定义变量创建别名"></a>为已定义变量创建别名</h3><p>定义变量时，在变量前加上‘&amp;’符号，就表示定义一个引用。首先声明，引用只是为引用对象创建了别名，而并未开辟新的内存。<br>先看下面一段代码：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">double</span> &amp;r = i;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the value of i is &quot;</span> &lt;&lt; i &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the value of r is &quot;</span> &lt;&lt; r &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the address of i is &quot;</span>&lt;&lt; &amp;i &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the address of r is &quot;</span> &lt;&lt; &amp;r &lt;&lt; std::endl;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>定义一个double类型的变量，并对其进行同类型引用，输出如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">the value of i is <span class="number">42</span></span><br><span class="line">the value of r is <span class="number">42</span></span><br><span class="line">the address of i is <span class="number">0x7ffcf8119c88</span></span><br><span class="line">the address of r is <span class="number">0x7ffcf8119c88</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，不仅指向的字面值相等，其内存地址也相等。</p>
+<h3 id="非const引用的限制"><a href="#非const引用的限制" class="headerlink" title="非const引用的限制"></a>非const引用的限制</h3><p>非const引用只能进行同类型引用，否则编译器会报错<br>比如：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">int</span> &amp;r = i;</span><br></pre></td></tr></table></figure>
+<p>运行程序，会报错：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">In function ‘<span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>’:</span></span><br><span class="line"><span class="function">error: invalid initialization of non-const reference of type ‘int&amp;’ from an rvalue of type ‘int’</span></span><br><span class="line"><span class="function">  int &amp;r =</span> i;</span><br><span class="line">           ^</span><br></pre></td></tr></table></figure>
+<p>其实这样也无可厚非，毕竟非const引用，可以改变引用对象，而不同类型的修改，会产生无法预料的错误。</p>
+<p>同理，非const引用也不可用于右值初始化，因为字面值常量是不可更改的。</p>
+<h3 id="const引用值得注意的细节"><a href="#const引用值得注意的细节" class="headerlink" title="const引用值得注意的细节"></a>const引用值得注意的细节</h3><p>const引用既可用于同类型，也可用于不同类型，也可用于字面值常量。在const引用应用于不同类型的引用时会创建中间变量，也就是说该引用并非是指向你想要指向的引用对象了。<br>示例如下:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r = i;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the value of i is &quot;</span> &lt;&lt; i &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the value of r is &quot;</span> &lt;&lt; r &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the address of i is &quot;</span>&lt;&lt; &amp;i &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the address of r is &quot;</span> &lt;&lt; &amp;r &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>
+<p>最终会输出不同的内存地址：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">the value of i is <span class="number">42</span></span><br><span class="line">the value of r is <span class="number">42</span></span><br><span class="line">the address of i is <span class="number">0x7ffc1a38a528</span></span><br><span class="line">the address of r is <span class="number">0x7ffc1a38a524</span></span><br></pre></td></tr></table></figure>
+<p>也就是说，其实在引用时进行了如下操作：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">int</span> temp = i;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r = temp;</span><br></pre></td></tr></table></figure>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><p>虽然不能对变量的const引用，不能通过引用改变被引用对象的内容，但却可以通过被引用对象自己来修改其值。<br>如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> i = <span class="number">42.0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> &amp;r = i;</span><br><span class="line">i = <span class="number">50.0</span>;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the value of i is &quot;</span> &lt;&lt; i &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the value of r is &quot;</span> &lt;&lt; r &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the address of i is &quot;</span>&lt;&lt; &amp;i &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;the address of r is &quot;</span> &lt;&lt; &amp;r &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>
+<p>输出结果如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">the value of i is <span class="number">50</span></span><br><span class="line">the value of r is <span class="number">50</span></span><br><span class="line">the address of i is <span class="number">0x7fff7d83b988</span></span><br><span class="line">the address of r is <span class="number">0x7fff7d83b988</span></span><br></pre></td></tr></table></figure>
+<p>可以看到通过被引用对象将两者的内容都改变了。</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浅析C++中的指针</title>
+    <url>/2018/08/28/C++%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<p>注：本文中的int型变量为32位，占四个字节。</p>
+<p>本篇内容旨在对指针数组、数组指针、指针函数、函数指针进行总结，也希望能在总结的同时能有更深入的理解。</p>
+<h2 id="数组指针"><a href="#数组指针" class="headerlink" title="数组指针"></a>数组指针</h2><p>数组指针顾名思义是个指针，定义形如<code>(*arr)[n]</code>的一个数组指针，由于<code>()</code>的优先级最高，所以定义的是一个指针，这个指针指向含有n个元素的数组。</p>
+<span id="more"></span>
+<p>可以设计一个程序如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">int</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,</span><br><span class="line">                 <span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,</span><br><span class="line">                 <span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">int</span> (*arr)[<span class="number">4</span>] = a;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;arr = %p\n&quot;</span>,arr);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;a[0][0] = %p\n&quot;</span>,&amp;a[<span class="number">0</span>][<span class="number">0</span>]);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;ADDR(a[0][1]) = %p\n&quot;</span>,&amp;a[<span class="number">0</span>][<span class="number">1</span>]);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;arr[1] = %p\n&quot;</span>,++arr);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;a[1] = %p\n&quot;</span>,a[<span class="number">1</span>]);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行程序后输出结果如下:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">arr = <span class="number">0x7ffefffb8810</span></span><br><span class="line">a[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0x7ffefffb8810</span></span><br><span class="line">ADDR(a[<span class="number">0</span>][<span class="number">1</span>]) = <span class="number">0x7ffefffb8814</span></span><br><span class="line">arr[<span class="number">1</span>] = <span class="number">0x7ffefffb8820</span></span><br><span class="line">a[<span class="number">1</span>] = <span class="number">0x7ffefffb8820</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，初始化了arr后，其值与数组a[][]的首地址相同，而对arr的自增操作则使其值跳跃了整个数组的长度，该操作等同于二维数组a[][]的行地址加1，而进行如果下标操作a[0][1]，该元素的地址相对于a[0][0]只是增加了四个字节，即一个int型变量的长度。</p>
+<p>我们可以很清晰的从下图理解数组指针：<br><img data-src="/images/arr_p.jpg" alt="数组指针"></p>
+<h2 id="指针数组"><a href="#指针数组" class="headerlink" title="指针数组"></a>指针数组</h2><p>指针数组的概念就相对简单，指针数组是个数组，只不过内部存的元素都是指针类型，由于<code>[]</code>的优先级要高于<code>*</code>，所以该数组的定义形如<code>*arr[n]</code>。</p>
+<p>例子如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">int</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">5</span>,b = <span class="number">10</span>;</span><br><span class="line">  <span class="keyword">int</span> *arr[] = &#123;&amp;a,&amp;b&#125;;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;a = %d,b = %d\n&quot;</span>,*(arr[<span class="number">0</span>]),*(arr[<span class="number">1</span>]));</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序输出结果如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">a = <span class="number">5</span>,b = <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>数组指针没有什么难度，只是用数组去存指针而已。</p>
+<h2 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h2><p>函数指针其实在编程中相当有用，我们可以将函数的形参声明为函数指针，从而可以将函数的地址传入。</p>
+<p>函数作为参数传递跟变量传递一样有两种方式：值传递，地址传递。但是值传递有一个不好之处在于太占用空间，假设在A函数中声明一个形如B函数的形参，而非形如B函数的函数指针，那么将B函数作为参数传入时，就要分配整个B函数的空间给该参数，而函数指针则只会传入一个地址。那么还有一个问题，在函数内部进行函数调用也是一样，而且不会进行值传递，但是在函数内部进行调用，不够灵活，同一类函数可以实现的功能不一样，形如B函数的函数功能和函数名可能有所不同，而每次调用不同的函数时都要去改变A函数未免太不方便，所以才要把函数地址当作参数进行传入。</p>
+<p>设计一个程序如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp_min</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x &lt; y?x:y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp_max</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x &gt; y?x:y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> (*compare)(<span class="keyword">int</span>,<span class="keyword">int</span>))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (*compare)(x,y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">int</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">5</span>,b = <span class="number">10</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;the min of a,b is %d\n&quot;</span>,cmp(a,b,cmp_min));</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输入结果如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">the min of a,b is <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p>值得一提的是，函数指针是一个指针，我们不能在声明函数指针的同时进行函数的定义，因为我们只是声明一个指针，我们只能声明一个函数指针，然后用一个定义过的函数去对该指针进行初始化，就像下面这样：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp_min</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x &lt; y?x:y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">int</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">5</span>,b = <span class="number">6</span>;</span><br><span class="line">  <span class="keyword">int</span> (*compare)(<span class="keyword">int</span>,<span class="keyword">int</span>) = cmp_min;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;the min of a,b is %d\n&quot;</span>,(*compare)(a,b));</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果跟上面一样。</p>
+<p>其实函数指针可以和指针数组结合起来使用，我们都知道函数名单独使用其实是一个地址，所以可以将其作为指针存于指针数组中，通过数组对其进行访问。</p>
+<p>例子如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp_min</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x &lt; y?x:y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp_max</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x &gt; y?x:y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> (**compare)(<span class="keyword">int</span>,<span class="keyword">int</span>))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;the min of a,b is %d\n&quot;</span>,(*compare[<span class="number">0</span>])(x,y));</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;the max of a,b is %d\n&quot;</span>,(*compare[<span class="number">1</span>])(x,y));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">int</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">5</span>,b = <span class="number">10</span>;</span><br><span class="line">  <span class="keyword">int</span> (*arr[])(<span class="keyword">int</span>,<span class="keyword">int</span>) = &#123;cmp_min,cmp_max&#125;;</span><br><span class="line">  cmp(a,b,arr);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">the min of a,b is <span class="number">5</span></span><br><span class="line">the max of a,b is <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>在<code>cmp(int x,int y,int (**compare)(int,int))</code>中声明的函数形参使用了指针的指针，因为我们传入的是是数组的地址，需要先解引用获得数组内的函数地址，所以使用了指针的指针，也可以使用另一种形式：<code>*compare[](int,int)</code>，效果等同；如果我们在传参时使用了数组下标，则可以不用如此声明，直接声明为<code>cmp(int x,int y,int (*compare)(int,int))</code>即可。</p>
+<h2 id="指针函数"><a href="#指针函数" class="headerlink" title="指针函数"></a>指针函数</h2><p>指针函数是个函数，只不过返回值是个指针类型，这也是一个比较简单的概念，就像变量返回一样，指针函数的定义形如<code>*func()</code>。</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++服务器开发学习路线</title>
+    <url>/2021/04/18/C++%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</url>
+    <content><![CDATA[<h1 id="C-服务器开发学习路线"><a href="#C-服务器开发学习路线" class="headerlink" title="C++服务器开发学习路线"></a>C++服务器开发学习路线</h1><p>注意： 本文不全，边学边补充</p>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="熟练掌握C-C"><a href="#熟练掌握C-C" class="headerlink" title="熟练掌握C/C++"></a>熟练掌握C/C++</h3><ul>
+<li>基础语法、类及模板、C++2.0新特性、STL；</li>
+<li>STL源码及底层实现（多态的实现等）</li>
+<li>宽字符</li>
+<li>位域</li>
+<li>开发-编译-调试，熟练掌握一个IDE，linux下的cmake/makefile</li>
+</ul>
+<span id="more"></span>
+
+<h3 id="Linux-shell-命令"><a href="#Linux-shell-命令" class="headerlink" title="Linux shell 命令"></a>Linux shell 命令</h3><ul>
+<li>后台开发常用命令</li>
+</ul>
+<h3 id="Linux-windows系统编程"><a href="#Linux-windows系统编程" class="headerlink" title="Linux/windows系统编程"></a>Linux/windows系统编程</h3><ul>
+<li>文件IO</li>
+<li>线程</li>
+<li>进程</li>
+<li>线程同步</li>
+<li>时间函数</li>
+<li>……</li>
+</ul>
+<h3 id="socket网络编程"><a href="#socket网络编程" class="headerlink" title="socket网络编程"></a>socket网络编程</h3><ul>
+<li><p>socket/listen/send/bind/accept/connect/select/close/shutdown/recv</p>
+</li>
+<li><p>网络通信模型</p>
+<h4 id="学习方法"><a href="#学习方法" class="headerlink" title="学习方法"></a>学习方法</h4><ul>
+<li>学习以上API</li>
+<li>看开源项目的网络通信部分（redis、memcached）</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据库基本原理"><a href="#数据库基本原理" class="headerlink" title="数据库基本原理"></a>数据库基本原理</h3><ul>
+<li>数据库操作命令：增删改查</li>
+<li>索引用法</li>
+<li>SQL优化</li>
+<li>事务及锁</li>
+<li>explain</li>
+<li>分表分库分区分块</li>
+<li>负载均衡（读写分离、主从复制）</li>
+</ul>
+<p>​    </p>
+<h2 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h2><ul>
+<li>算法及数据结构</li>
+<li>操作系统原理（PE/ELF 进程地址空间的内存 函数调用 等）</li>
+<li>编码风格及代码优化</li>
+</ul>
+<h2 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h2><p>《提高C++性能的编程技术》</p>
+<p>《现代操作系统》</p>
+<p>《深入理解计算机系统》</p>
+<p>《深度探索C++对象模型》</p>
+<p>《Linux多线程服务端编程》</p>
+<p>《Linux高性能服务器编程》</p>
+<p>《TCP/IP网络编程》</p>
+<p>《计算机网络：自顶向下方法》</p>
+<p>《程序员的自我修养》</p>
+<p>《编程之美》</p>
+<p>《高性能MySQL》</p>
+<p>《Redis实战》</p>
+<p>《Linux系统编程》</p>
+<p>《TCP/IP卷一》</p>
+<p>《Linux内核设计与实现》</p>
+<p>《UNIX 网络编程：卷一/卷二》</p>
+<p>《UNIX环境高级编程》</p>
+<h2 id="源码阅读"><a href="#源码阅读" class="headerlink" title="源码阅读"></a>源码阅读</h2><ul>
+<li>Filezilla</li>
+<li>Redis</li>
+<li>Nginx</li>
+<li>moduo</li>
+</ul>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>服务器开发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux使用笔记</title>
+    <url>/2020/08/13/Linux%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="Linux常用操作"><a href="#Linux常用操作" class="headerlink" title="Linux常用操作"></a>Linux常用操作</h1><h2 id="创建sudo和ssh用户"><a href="#创建sudo和ssh用户" class="headerlink" title="创建sudo和ssh用户"></a>创建sudo和ssh用户</h2><h3 id="创建用户并设置sudo权限"><a href="#创建用户并设置sudo权限" class="headerlink" title="创建用户并设置sudo权限"></a>创建用户并设置sudo权限</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 使用adduer添加用户会在home目录中添加用户，并设置shell环境（/bin/bash），而useradd不会</span></span><br><span class="line">sudo adduser username #username是你要创建的用户名</span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用usermod将新用户添加进sudo用户组</span></span><br><span class="line">sudo usermod -G sudo username # username是刚才新建的用户名</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加sudo权限</span></span><br><span class="line">sudo vim /etc/sudoers</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加如下行</span></span><br><span class="line">username ALL=(ALL:ALL) ALL # username就是刚才新建用户名</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h3 id="设置ssh登录权限"><a href="#设置ssh登录权限" class="headerlink" title="设置ssh登录权限"></a>设置ssh登录权限</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 打开ssh配置文件</span></span><br><span class="line">sudo vim /etc/ssh/sshd_config</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加如下代码行</span></span><br><span class="line">AllowUsers username # username就是刚才新建用户名</span><br></pre></td></tr></table></figure>
+
+<h2 id="npm换源"><a href="#npm换源" class="headerlink" title="npm换源"></a>npm换源</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 使用一下命令换源，会将配置写入.npmrc</span></span><br><span class="line">npm config set registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<h2 id="Conda换源"><a href="#Conda换源" class="headerlink" title="Conda换源"></a>Conda换源</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 会将配置写入.condarc</span></span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/</span><br><span class="line">conda config --set show_channel_urls yes</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看镜像源</span></span><br><span class="line">conda config --show channels</span><br><span class="line"><span class="meta">#</span><span class="bash"> 移除镜像源，source-address就是要移除的源地址</span></span><br><span class="line">conda config --remove-key channels source-address</span><br></pre></td></tr></table></figure>
+
+<h2 id="pip换源"><a href="#pip换源" class="headerlink" title="pip换源"></a>pip换源</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 打开~/.config/pip/pip.conf，并写入以下内容，换成清华源</span></span><br><span class="line">[global]</span><br><span class="line">index-url = https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+
+<h2 id="ubuntu16-04换源"><a href="#ubuntu16-04换源" class="headerlink" title="ubuntu16.04换源"></a>ubuntu16.04换源</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 先备份</span></span><br><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak</span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改/etc/apt/sources.list，添加如下内容</span></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line"><span class="meta">#</span><span class="bash"> 更新源</span></span><br><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
+<!-- more -->
+
+<h2 id="显卡驱动卸载及安装（ubuntu16-04）"><a href="#显卡驱动卸载及安装（ubuntu16-04）" class="headerlink" title="显卡驱动卸载及安装（ubuntu16.04）"></a>显卡驱动卸载及安装（ubuntu16.04）</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 禁用图形界面，也就是关闭屏幕显示</span></span><br><span class="line">sudo service lightdm stop</span><br><span class="line"><span class="meta">#</span><span class="bash"> 之前的显卡驱动全部清除，根据提示选yes</span></span><br><span class="line">sudo apt-get --purge remove nvidia-\*</span><br><span class="line"><span class="meta">#</span><span class="bash"> 从官网下载驱动（这里以435.21为例，可以从链接中直接替换自己想要的版本）</span></span><br><span class="line">wget http://cn.download.nvidia.com/XFree86/Linux-x86_64/435.21/NVIDIA-Linux-x86_64-435.21.run</span><br><span class="line"><span class="meta">#</span><span class="bash"> 赋予运行权限</span></span><br><span class="line">sudo chmod a+x NVIDIA-Linux-x86_64-435.21.run</span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行run文件， 全都按照默认进行选择</span></span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-435.21.run</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看是否安装成功</span></span><br><span class="line">nvidia-smi</span><br><span class="line"><span class="meta">#</span><span class="bash"> 若是上一步显示没有，则需要进行显卡驱动挂载</span></span><br><span class="line">modprobe nvidia</span><br></pre></td></tr></table></figure>
+
+<h2 id="linux使用常用命令"><a href="#linux使用常用命令" class="headerlink" title="linux使用常用命令"></a>linux使用常用命令</h2><h3 id="查看系统负载"><a href="#查看系统负载" class="headerlink" title="查看系统负载"></a>查看系统负载</h3><ul>
+<li>top<ul>
+<li>动态监视进程活动以及系统负载等信息</li>
+</ul>
+</li>
+<li>uptime<ul>
+<li>查看当前系统时间、系统已运行时间、启动终端数量以及平均负载（过去1分钟/5分钟/15分钟）</li>
+</ul>
+</li>
+</ul>
+<h3 id="内存使用状况"><a href="#内存使用状况" class="headerlink" title="内存使用状况"></a>内存使用状况</h3><ul>
+<li><p>top</p>
+<ul>
+<li>同上</li>
+</ul>
+</li>
+<li><p>到 <code>/proc/</code>目录查看系统运行时信息</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat /proc/meminfo</span></span><br></pre></td></tr></table></figure></li>
+<li><p>free</p>
+<ul>
+<li>显示当前系统中内存的使用量信息</li>
+</ul>
+</li>
+</ul>
+<h3 id="磁盘使用情况"><a href="#磁盘使用情况" class="headerlink" title="磁盘使用情况"></a>磁盘使用情况</h3><ul>
+<li>df<ul>
+<li>查看磁盘空间的使用状态以及文件系统</li>
+</ul>
+</li>
+<li>du<ul>
+<li>查看目录或者文件的磁盘占用量，可以递归查询目录</li>
+</ul>
+</li>
+</ul>
+<h4 id="查看cpu统计信息"><a href="#查看cpu统计信息" class="headerlink" title="查看cpu统计信息"></a>查看cpu统计信息</h4><ul>
+<li>top<ul>
+<li>同上</li>
+</ul>
+</li>
+<li>iostat<ul>
+<li>监控系统输入输出设备负载状况，cpu占用量</li>
+</ul>
+</li>
+</ul>
+<h3 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h3><ul>
+<li>head<ul>
+<li>查看文件前n行</li>
+</ul>
+</li>
+<li>tail<ul>
+<li>查看文件后n行</li>
+</ul>
+</li>
+<li>tailf<ul>
+<li>动态监控log文件的增长；</li>
+<li>弃用，推荐tail -f，更加安全；</li>
+</ul>
+</li>
+<li>more<ul>
+<li>分页显示的文件查看工具；</li>
+</ul>
+</li>
+<li>less<ul>
+<li>和more相似，比more更加强大，不用非得从文件开头查看数据，可以指定起始行；</li>
+<li>二者区别如下：<ul>
+<li>less可以按键盘上下方向键显示上下内容（或者ctrl+f/crtl+b上下翻页）,more不能通过上下方向键控制显示</li>
+<li>less不必读整个文件，加载速度会比more更快</li>
+<li>less退出后shell不会留下刚显示的内容,而more退出后会在shell上留下刚显示的内容</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>cat<ul>
+<li>查看文件的内容</li>
+</ul>
+</li>
+<li>touch<ul>
+<li>新建文件</li>
+</ul>
+</li>
+<li>dd<ul>
+<li>根据选项来进行转换以及copy文件的内容；</li>
+</ul>
+</li>
+</ul>
+<h3 id="查看打开的文件"><a href="#查看打开的文件" class="headerlink" title="查看打开的文件"></a>查看打开的文件</h3><ul>
+<li>lsof</li>
+</ul>
+<h3 id="上传-下载"><a href="#上传-下载" class="headerlink" title="上传/下载"></a>上传/下载</h3><ul>
+<li>rz/sz<ul>
+<li>基于XMODEM协议的异步文件传输工具，简化开发效率；</li>
+</ul>
+</li>
+<li>scp<ul>
+<li>ssh文件传输工具，使用安全验证；</li>
+</ul>
+</li>
+<li>rsync<ul>
+<li>远程文件同步工具，功能较为强大；</li>
+</ul>
+</li>
+<li>sync<ul>
+<li>刷新缓冲区，写脏数据到磁盘，也即进行持久化；</li>
+</ul>
+</li>
+</ul>
+<h3 id="网络工具"><a href="#网络工具" class="headerlink" title="网络工具"></a>网络工具</h3><ul>
+<li>ip<ul>
+<li>可以操作路由表、网卡、隧道等，也可以打印以上的相关信息，十分有用；</li>
+</ul>
+</li>
+<li>tcpdump<ul>
+<li>将网络中指定的内容dump成文件；</li>
+</ul>
+</li>
+<li>tc<ul>
+<li>非常强大的流量控制工具，一般用来调整网卡的带宽等参数；</li>
+</ul>
+</li>
+<li>netcat<ul>
+<li>TCP/IP瑞士军刀，一般用来测带宽；</li>
+</ul>
+</li>
+<li>netstat<ul>
+<li>打印网络相关的各种状态信息，包括路由表，端口是否在监听等（ss命令的功能类似，但是更加强大）；</li>
+</ul>
+</li>
+<li>traceroute<ul>
+<li>通过自增设置ttl的方式，不断的向外探测节点，最终打印路由经过的节点信息；</li>
+</ul>
+</li>
+</ul>
+<h3 id="查询工具"><a href="#查询工具" class="headerlink" title="查询工具"></a>查询工具</h3><ul>
+<li>find<ul>
+<li>根据pattern在指定的路径中查询名称匹配该pattern的文件及目录；</li>
+</ul>
+</li>
+<li>grep<ul>
+<li>根据给定的pattern匹配文件中的行，非常强大，可以搜索某个路径下匹配该pattern的所有文件中的行，并可标明来自于哪个文件；</li>
+</ul>
+</li>
+<li>pgrep<ul>
+<li>可以基于系统中当前正在运行的进程查询目标进程并列出进程pid；</li>
+</ul>
+</li>
+<li>which<ul>
+<li>定位一个命令的二进制文件的位置；</li>
+</ul>
+</li>
+<li>whereis<ul>
+<li>可以定位指定命令的二进制文件、源文件以及帮助文档；</li>
+</ul>
+</li>
+</ul>
+<h3 id="其他常用工具"><a href="#其他常用工具" class="headerlink" title="其他常用工具"></a>其他常用工具</h3><ul>
+<li>md5sum<ul>
+<li>可以计算以及检查md5信息摘要</li>
+</ul>
+</li>
+<li>watch<ul>
+<li>周期执行一个程序，并且全屏输出，动态监控</li>
+</ul>
+</li>
+<li>tmux<ul>
+<li>tmux是一个终端复用器，非常有用，linux中的终端窗口与会话绑定，关闭终端（比如断开ssh连接）之后，在该终端运行的程序就会中断（非后台进程），tmux可以做到会话与窗口“解绑”；</li>
+</ul>
+</li>
+<li>uname<ul>
+<li>查看系统信息</li>
+<li>经典用法 ： <code>uname -a</code>  </li>
+</ul>
+</li>
+<li>tee<ul>
+<li>读取标准输入，并将该内容同时输出到标准输出以及文件；</li>
+</ul>
+</li>
+<li>tree<ul>
+<li>查看路径的层级结构</li>
+</ul>
+</li>
+<li>sort<ul>
+<li>行级排序工具</li>
+</ul>
+</li>
+<li>cut<ul>
+<li>按照一定的模式切分每一行，并选择其中某部分</li>
+</ul>
+</li>
+<li>wc<ul>
+<li>可以打印一个文件中或者标准输入（也是文件）中的换行的数量（即行数）、词的数量以及总的字节数；</li>
+</ul>
+</li>
+<li>uniq<ul>
+<li>打印重复的行</li>
+</ul>
+</li>
+</ul>
+<h3 id="linux三剑客"><a href="#linux三剑客" class="headerlink" title="linux三剑客"></a>linux三剑客</h3><ul>
+<li>sed<ul>
+<li>强大文本替换工具，主要依赖正则表达式</li>
+</ul>
+</li>
+<li>awk<ul>
+<li>强大的文本处理语言</li>
+</ul>
+</li>
+<li>grep<ul>
+<li>模式匹配工具</li>
+</ul>
+</li>
+</ul>
+<h3 id="有用的链接"><a href="#有用的链接" class="headerlink" title="有用的链接"></a>有用的链接</h3><p><a href="https://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/index.html">linux手册</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>npm</tag>
+        <tag>conda</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>fabric1.4安装部署</title>
+    <url>/2020/03/17/fabric1.4%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p><strong>注意：</strong> 本文基于CentOS7，由于docker镜像较大，确保磁盘空间充足</p>
+<h3 id="卸载已安装的Docker"><a href="#卸载已安装的Docker" class="headerlink" title="卸载已安装的Docker"></a>卸载已安装的Docker</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y remove docker \</span><br><span class="line">              docker-client \</span><br><span class="line">              docker-client-latest \</span><br><span class="line">              docker-common \</span><br><span class="line">              docker-latest \</span><br><span class="line">              docker-latest-logrotate \</span><br><span class="line">              docker-logrotate \</span><br><span class="line">              docker-selinux \</span><br><span class="line">              docker-engine-selinux \</span><br><span class="line">              docker-engine</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<!-- more -->
+<h3 id="安装Docker和Docker-compose"><a href="#安装Docker和Docker-compose" class="headerlink" title="安装Docker和Docker-compose"></a>安装Docker和Docker-compose</h3><ul>
+<li>yum换阿里源<ul>
+<li>安装一些必要包  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y install wget curl vim git gcc-c++</span><br></pre></td></tr></table></figure></li>
+<li>备份原有源  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak</span><br></pre></td></tr></table></figure></li>
+<li>进入目录<code>/etc/yum.repos.d/</code>  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /etc/yum.repos.d/</span><br></pre></td></tr></table></figure></li>
+<li>获取源  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br></pre></td></tr></table></figure></li>
+<li>自动选择最快源  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum makecache fast</span><br></pre></td></tr></table></figure></li>
+<li>更新     <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>安装pip(安装pip主要是为了没梯子的情况下安装docker-compose，有梯子的情况下可以不安装pip)<ul>
+<li>先安装epel扩展源  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y install epel-release</span><br></pre></td></tr></table></figure></li>
+<li>安装ius软件源  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y install https://centos7.iuscommunity.org/ius-release.rpm </span><br></pre></td></tr></table></figure></li>
+<li>安装python3, pip3  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y install python36u</span><br></pre></td></tr></table></figure></li>
+<li>pip换豆瓣源  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir ~/.pip</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim ~/.pip/pip.conf</span><br></pre></td></tr></table></figure>
+  添加如下内容：  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[global]</span><br><span class="line">index-url=http://pypi.douban.com/simple</span><br><span class="line">trusted-host = pypi.douban.com </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>安装Docker CE<ul>
+<li>安装yum-utils  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure></li>
+<li>设置docker-ce阿里源  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo </span><br></pre></td></tr></table></figure>
+  随后运行  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum makecache fast</span><br></pre></td></tr></table></figure></li>
+<li>查看可安装Docker版本  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum list docker-ce --showduplicates | sort -r</span><br></pre></td></tr></table></figure></li>
+<li>安装docker-ce  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install docker-ce</span><br></pre></td></tr></table></figure></li>
+<li>查看安装的docker-ce版本  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker --version</span><br></pre></td></tr></table></figure></li>
+<li>启动Docker并设置开机启动  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl enable docker</span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>安装docker-compose<ul>
+<li>方法一：pip3安装docker-compose（适合无梯子）  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip3 install docker-compose</span><br></pre></td></tr></table></figure></li>
+<li>方法二：直接从<code>github</code>获取(适合有梯子,需要安装proxychains4，没梯子的情况下极慢)  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">proxychains4 curl -L https://github.com/docker/compose/releases/download/1.25.4/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure></li>
+<li>查看docker-compose版本  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker-compose version</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="Go安装（1-13-5）"><a href="#Go安装（1-13-5）" class="headerlink" title="Go安装（1.13.5）"></a>Go安装（1.13.5）</h3><ul>
+<li>首先官网下载go安装包  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+  <strong>如若下载不了也可以直接用帮区里面的文件</strong></li>
+<li>解压到目录<code>/usr/local</code>  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar -C /usr/local -xzf go1.13.5.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure></li>
+<li>编辑<code>/etc/profile</code>  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim /etc/profile</span><br></pre></td></tr></table></figure></li>
+<li>文件末尾添加两行如下  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export PATH=$PATH:/usr/local/go/bin</span><br><span class="line">export GOPATH=/opt/gopath</span><br></pre></td></tr></table></figure></li>
+<li>使其生效  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></li>
+<li>查看是否添加成功  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo $PATH</span><br></pre></td></tr></table></figure></li>
+<li>查看go版本  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">go version</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><ul>
+<li><p>安装node.js(主要是根据官方文档运行第一个程序用的javascripts)</p>
+<ul>
+<li><p>​    安装nvm(第一种方法，需要梯子)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">proxychains4 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash</span><br></pre></td></tr></table></figure></li>
+<li><p>使环境变量生效</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure></li>
+<li><p>验证安装</p>
+</li>
+</ul>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">command</span> -v nvm</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>查看所有node版本</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm ls-remote</span><br></pre></td></tr></table></figure></li>
+<li><p>按照指定版本的node</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nvm install &lt;version&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>查看是否安装成功</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">node -v </span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>下载压缩包（这是第二种方法）</p>
+<pre><code>  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /opt</span><br></pre></td></tr></table></figure>
+</code></pre>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://npm.taobao.org/mirrors/node/v8.11.2/node-v8.11.2-linux-x64.tar.xz</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解压并创建软连接</p>
+<pre><code>  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar xvf node-v8.11.2-linux-x64.tar.xz </span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ln -s /opt/node-v8.11.2-linux-x64/bin/npm   /usr/local/bin/ </span><br></pre></td></tr></table></figure>
+</code></pre>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ln -s /opt/node-v8.11.2-linux-x64/bin/node   /usr/local/bin/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看版本  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure></li>
+<li>配置淘宝镜像源<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm config set registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+  查看是否成功:  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm config get registry</span><br></pre></td></tr></table></figure>
+  成功则输出如下：  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://registry.npm.taobao.org/</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>下载项目文件</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/hyperledger/fabric.git</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /opt/gopath/src/github.com/hyperledger/fabric/</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git checkout v1.4.4</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd scripts</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装测试fabric-1.4.4所需的docker镜像(<strong>此步骤需确保磁盘空间足够</strong>)</p>
+<ul>
+<li><p>设置docker阿里源</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim /etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
+<p>  修改内容如下：</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;registry-mirrors&quot;: [&quot;https://giezbins.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  重载守护进程</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+<p>  重启docker</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure></li>
+<li><p>修改当前目录下bootstrap.sh文件中的变量<code>BINARIES</code>为<code>false</code></p>
+</li>
+<li><p>运行脚本进行下载</p>
+<p>  没梯子就直接运行</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./bootstrap.sh</span><br></pre></td></tr></table></figure>
+<p>  有梯子的话可以用<code>proxychains4</code>工具:</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">proxychains4 bash bootstrap.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>通过命令<code>docker images</code>查看镜像是否安装完成:</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hyperledger/fabric-zookeeper</span><br><span class="line">hyperledger/fabric-orderer</span><br><span class="line">hyperledger/fabric-peer</span><br><span class="line">hyperledger/fabric-couchdb</span><br><span class="line">hyperledger/fabric-ca</span><br><span class="line">hyperledger/fabric-ccenv</span><br><span class="line">hyperledger/fabric-kafka</span><br><span class="line">hyperledger/fabric-tools</span><br><span class="line">hyperledger/fabric-baseimage</span><br><span class="line">hyperledger/fabric-baseos</span><br><span class="line">hyperledger/fabric-javaenv   </span><br></pre></td></tr></table></figure></li>
+<li><p>手动下载二进制工具</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd  ./fabric-samples</span><br></pre></td></tr></table></figure>
+<p>  有梯子就直接运行：</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">proxychains4 wget https://github.cm/hyperledger/fabric/releases/download/v1.4.4/hyperledger-fabric-linux-amd64-1.4.4.tar.gz | tar xzf</span><br><span class="line">proxychains4 wget https://github.com/hyperledger/fabric-ca/releases/download/v1.4.4/hyperledger-fabric-ca-linux-amd64-1.4.4.tar.gz | tar xzf</span><br></pre></td></tr></table></figure>
+<p>  没有梯子就直接到从码云之类的其他网站下载<code>hyperledger-fabric-linux-amd64-1.4.4.tar.gz</code>和<code>hyperledger-fabric-ca-linux-amd64-1.4.4.tar.gz</code>，然后将两个压缩包拷贝到当前目录并解压：</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar xzf hyperledger-fabric-linux-amd64-1.4.4.tar.gz</span><br><span class="line">tar xzf hyperledger-fabric-ca-linux-amd64-1.4.4.tar.gz</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>测试网络是否可用</p>
+<ul>
+<li>进入<code>first-nerwork</code>目录  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd ./first-network</span><br></pre></td></tr></table></figure>
+  环境污染可能会导致网络启动失败，可以先运行以下命令清洗环境：  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker rm -f $(docker ps -aq)</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker rmi -f $(docker images | grep fabcar | awk &#x27;&#123;print $3&#125;&#x27;)</span><br></pre></td></tr></table></figure>
+  直接运行脚本  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./byfn.sh -m generate</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./byfn.sh -m up</span><br></pre></td></tr></table></figure>
+  若是未出现error，则证明成功运行，可以运行<code>./byfn.sh -m down</code>命令关闭网络。</li>
+</ul>
+</li>
+</ul>
+<h3 id="跑通JavaScript样例"><a href="#跑通JavaScript样例" class="headerlink" title="跑通JavaScript样例"></a>跑通JavaScript样例</h3><ul>
+<li><p>进入样例中的<code>fabcar</code>目录</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd ../fabcar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动网络</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./startFabric.sh</span><br></pre></td></tr></table></figure>
+<p>  <strong>注：</strong> 如果之前做过该操作，需通过下列命令清空环境后再启动网络：</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker rm -f $(docker ps -aq)</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker rmi -f $(docker images | grep fabcar | awk &#x27;&#123;print $3&#125;&#x27;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入目录<code>javascripts</code></p>
+</li>
+<li><p>下载必要模块</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install --unsafe-perm</span><br></pre></td></tr></table></figure>
+<p>  <strong>注：</strong> 如果出现error，可能是<code>nodejs</code>版本不对，可以试试<code>10.18.1</code>,运行命令可加上<code>--build-from-source</code>参数再次尝试（先删除当前目录下的<code>node_modules</code>目录,因为此步骤安装的模块都放在该目录中，不删除重新进行依然会出错！！！）</p>
+</li>
+<li><p>接着就可按照<code>https://hyperledger-fabric.readthedocs.io/en/release-1.4/write_first_app.html</code>的教程中的内容往下进行测试（接着<code>npm install</code>之后）</p>
+<h2 id="ubuntu下安装docker-ce和docker-compose"><a href="#ubuntu下安装docker-ce和docker-compose" class="headerlink" title="ubuntu下安装docker-ce和docker-compose"></a>ubuntu下安装docker-ce和docker-compose</h2><h4 id="卸载原有docker-engine"><a href="#卸载原有docker-engine" class="headerlink" title="卸载原有docker engine"></a>卸载原有docker engine</h4>  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get remove docker \</span><br><span class="line">docker-engine \</span><br><span class="line">docker.io</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加ubuntu软件源密钥"><a href="#添加ubuntu软件源密钥" class="headerlink" title="添加ubuntu软件源密钥"></a>添加ubuntu软件源密钥</h4>  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加https传输的软件包以及ca证书"><a href="#添加https传输的软件包以及ca证书" class="headerlink" title="添加https传输的软件包以及ca证书"></a>添加https传输的软件包以及ca证书</h4>  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line"></span><br><span class="line">sudo apt-get install \</span><br><span class="line">apt-transport-https \</span><br><span class="line">ca-certificates \</span><br><span class="line">curl \</span><br><span class="line">software-properties-common</span><br></pre></td></tr></table></figure>
+
+<h4 id="向source-list添加Docker软件源"><a href="#向source-list添加Docker软件源" class="headerlink" title="向source.list添加Docker软件源"></a>向source.list添加Docker软件源</h4>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo add-apt-repository \</span><br><span class="line"><span class="string">&quot;deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu  bionic stable&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="更新软件源并安装的docker-ce"><a href="#更新软件源并安装的docker-ce" class="headerlink" title="更新软件源并安装的docker-ce"></a>更新软件源并安装的docker-ce</h4>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 更新apt-get，并进行安装</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install docker-ce</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加docker用户组防止出现Unix-socket-与-Docker-引擎通讯权限不足的问题"><a href="#添加docker用户组防止出现Unix-socket-与-Docker-引擎通讯权限不足的问题" class="headerlink" title="添加docker用户组防止出现Unix socket 与 Docker 引擎通讯权限不足的问题"></a>添加docker用户组防止出现Unix socket 与 Docker 引擎通讯权限不足的问题</h4>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 建立 docker 组：</span><br><span class="line">sudo groupadd docker</span><br><span class="line">// 将当前用户加入 docker 组：</span><br><span class="line">sudo gpasswd -a <span class="variable">$USER</span> docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="启动并测试是否安装成功"><a href="#启动并测试是否安装成功" class="headerlink" title="启动并测试是否安装成功"></a>启动并测试是否安装成功</h4>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br><span class="line">sudo systemctl start docker</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<h4 id="安装docker-compose"><a href="#安装docker-compose" class="headerlink" title="安装docker-compose"></a>安装docker-compose</h4>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo curl -L <span class="string">&quot;https://github.com/docker/compose/releases/download/1.25.5/docker-compose-<span class="subst">$(uname -s)</span>-<span class="subst">$(uname -m)</span>&quot;</span> -o /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"></span><br><span class="line">sudo chmod +x /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"></span><br><span class="line"><span class="comment">#测试安装是否成功</span></span><br><span class="line">$ docker-compose --version</span><br><span class="line">docker-compose version 1.25.5, build 1110ad01</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>区块链</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>jupyter-notebook使用笔记</title>
+    <url>/2020/08/20/jupyter-notebook/</url>
+    <content><![CDATA[<h1 id="jupyter-notebook使用配置"><a href="#jupyter-notebook使用配置" class="headerlink" title="jupyter-notebook使用配置"></a>jupyter-notebook使用配置</h1><h2 id="使用pip进行安装"><a href="#使用pip进行安装" class="headerlink" title="使用pip进行安装"></a>使用pip进行安装</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install jupyter</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成配置文件"><a href="#生成配置文件" class="headerlink" title="生成配置文件"></a>生成配置文件</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter-notebook --generate-config</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成密码"><a href="#生成密码" class="headerlink" title="生成密码"></a>生成密码</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter-notebook password # 输入密码后会生成到一个json文件，等下复制到~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置-jupyter-jupyter-notebook-config-py"><a href="#配置-jupyter-jupyter-notebook-config-py" class="headerlink" title="配置~/.jupyter/jupyter_notebook_config.py"></a>配置~/.jupyter/jupyter_notebook_config.py</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">c.NotebookApp.ip=<span class="string">&#x27;*&#x27;</span>   <span class="comment"># “*”代表非本机都可以访问</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.allow_remote_access = <span class="literal">True</span> <span class="comment"># 若是非本机访问，还需开启远程访问</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.open_browser = <span class="literal">False</span>    <span class="comment"># 服务器上不需要启动浏览器</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.notebook_dir = <span class="string">&#x27;~/jupyter_workspace&#x27;</span>    <span class="comment"># 指定notebook服务的默认打开目录</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.port = <span class="number">8888</span> <span class="comment"># 默认服务端口</span></span><br><span class="line"></span><br><span class="line">c.NotebookApp.password = <span class="string">u&#x27;encrypted_password&#x27;</span> <span class="comment"># encrypted_password是刚才生成的密码</span></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<!--more-->
+<h2 id="配置python虚拟环境到jupyter-kernel"><a href="#配置python虚拟环境到jupyter-kernel" class="headerlink" title="配置python虚拟环境到jupyter kernel"></a>配置python虚拟环境到jupyter kernel</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看jupyter中已有的kernel（即python虚拟环境）</span></span><br><span class="line">jupyter kernelspec list</span><br><span class="line"><span class="meta">#</span><span class="bash"> 激活自己的虚拟环境</span></span><br><span class="line">conda activate virtual_envirnment</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装ipykernel到jupyter-notebook</span></span><br><span class="line">python -m ipykernel install --user --name virtual_envirnment --display-name &quot;virtual_envirnment&quot; # 其中virtual_envirnment是你的虚拟环境名</span><br><span class="line"><span class="meta">#</span><span class="bash"> 也可以移除不用的kernel</span></span><br><span class="line">jupyter kernelspec remove torch1.2</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>jupyter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TCP/IP协议栈学习笔记</title>
+    <url>/2021/04/18/tcpip%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="TCP-IP协议栈"><a href="#TCP-IP协议栈" class="headerlink" title="TCP/IP协议栈"></a>TCP/IP协议栈</h1><p>TCP/IP协议分为五层，实际应用只有四层，数据链路层和物理层可以当作一层，后文皆只介绍四层结构，其中OSI模型的应用层、表示层和会话层对应TCP/IP的应用层，数据链路层、物理层对应TCP/IP的网络接口层。</p>
+<h2 id="协议栈简介"><a href="#协议栈简介" class="headerlink" title="协议栈简介"></a>协议栈简介</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">协议即一组规范。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li><p>应用层</p>
+<ul>
+<li><p>支持协议</p>
+<p>HTTP、 DNS、FTP、NFS、SSH、TELNET</p>
+</li>
+<li></li>
+</ul>
+</li>
+<li><p>传输层</p>
+<ul>
+<li><p>支持协议</p>
+<p>TCP、UDP</p>
+</li>
+</ul>
+</li>
+<li><p>网络层</p>
+<ul>
+<li><p>支持协议</p>
+<p>TCMP、IP、IGMP</p>
+</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<span id="more"></span>
+
+<ul>
+<li><p>网络接口层</p>
+<ul>
+<li><p>支持协议</p>
+<p>ARP、以太网帧协议</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><em>注意：应用层工作在用户态，后三层工作在内核态，也就是说开发者只需要进行应用层开发，而剩下的工作是由操作系统完成的。</em></p>
+<h2 id="封装过程"><a href="#封装过程" class="headerlink" title="封装过程"></a>封装过程</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">上层的实现依赖于下层提供的服务，下层的内部实现对上层透明。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li><p>用户-&gt;应用层</p>
+<ul>
+<li><p>封装过程</p>
+<p>给用户数据添加应用层首部</p>
+</li>
+</ul>
+</li>
+<li><p>应用层-&gt;传输层</p>
+<ul>
+<li><p>封装过程</p>
+<p>添加TCP/UDP首部，填充端口号</p>
+</li>
+<li><p>TCP</p>
+<p>首部最小20个字节，16位的目标端口号、6位的源端口号、32位序号、32位确认序号、6个标志位、16位的窗口大小、首部长度、校验和、窗口大小、以及可选的选项等</p>
+<p>有连接可靠的全双工传输层协议</p>
+<p>需要建立连接，开销较大，耗时较多</p>
+</li>
+<li><p>UDP</p>
+<p>首部只有8个字节，包括16位的目标端口号、16位的源端口以及校验和</p>
+<p>无连接，尽最大可能交付，不保证可靠性，可靠性可由应用层实现</p>
+</li>
+<li><p>16位端口号</p>
+<ul>
+<li>用于不同应用间的通信，每一个进程对应一个端口号</li>
+<li>经典端口号<ul>
+<li>22 ：ssh</li>
+<li>80 ：http</li>
+<li>443 : https</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>传输层-&gt;网络层</p>
+<ul>
+<li><p>封装过程</p>
+<p>将TCP/UDP数据段进行封装，添加IP首部，这其中可能会有IP分片，取决于IP数据报的长度。</p>
+</li>
+<li><p>TTL（首部中1个字节）</p>
+<p>IP数据报在路由节点中的跳转上限，经过一个路由节点时TTL减一，为0则丢弃。</p>
+</li>
+<li><p>首部中的标识和片偏移用于IP分片</p>
+</li>
+<li><p>2字节的首部校验和用于校验首部的完整性和正确性</p>
+</li>
+<li><p>IP地址</p>
+<p>在广域网环境中唯一标识一台主机</p>
+</li>
+</ul>
+</li>
+<li><p>网络层-&gt;接口层</p>
+<ul>
+<li><p>封装过程</p>
+<p>将IP数据报或者ARP请求数据封装成<strong>以太网帧格式</strong>，即添加以太网帧首部及尾部，以太网帧首部包括目的MAC地址（6bytes）、源MAC地址（6bytes）以及帧类型字段（2bytes），尾部是CRC校验码。</p>
+<p>其中目的MAC地址是不一定知道的，在本地ARP缓存中查找不到对方IP地址和MAC地址的对应条目时需要向网络发送ARP查询。</p>
+<p><strong>注：PPP/HDLC不需要MAC地址，因为其属于另一种接口层协议</strong></p>
+</li>
+<li><p>帧类型字段</p>
+<ul>
+<li><p>0800</p>
+<p>表示这是一个IP请求</p>
+</li>
+<li><p>0806 </p>
+<p>表示这是一个ARP请求</p>
+</li>
+<li><p>0835</p>
+<p>表示这是一个RARP请求，RARP是逆地址解析协议，很少用</p>
+</li>
+</ul>
+</li>
+<li><p>数据长度限制</p>
+<p>最小46字节，最大1500字节（被称为MTU，指以太网最大传输单元），大于1500字节的IP数据报是要在IP层进行分片的（fragmentation）。</p>
+</li>
+<li><p>ARP请求过程</p>
+<ul>
+<li><p>判断是否为同一网段</p>
+<p>根据IP地址和子网掩码进行判断</p>
+</li>
+<li><p>填充以太网帧（同一网段）</p>
+<ul>
+<li>目的MAC地址设置为全1的广播地址</li>
+<li>类型字段设置为0806</li>
+<li>填充ARP请求的数据部分</li>
+</ul>
+</li>
+<li><p><strong>广播到局域网中</strong>（同一网段）</p>
+<p>局域网内同网段主机比对自己的IP地址和ARP请求中的IP地址，如果无关则丢弃；如果有关则在填充后交换源与目的以及修改数据部分，并进行回发。</p>
+<p>注意：比对的都是数据部分，头部是用来进行传输的，数据部分承载的是请求需要的数据以及回发的数据。</p>
+</li>
+<li><p>路由器（不同网段）</p>
+<p>路由器隔离广播，局域网也可能有多个子网段，跨网段通信需要使用网关的MAC地址，所以在判断目的IP和本机IP不属于同一网段的情况下，将目的MAC地址设置成网关MAC（此时也涉及到不知道网关MAC地址的情况，使用同网段广播即可），网关收到ARP请求时，发现不是目的IP不是本机IP，进行路由转发，递归查询。</p>
+</li>
+</ul>
+<p>注意：收到ARP请求的主机会更新本地ARP缓存</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><em>接口层直接将0/1电信号在链路中传输，此时涉及到规范电气特性，碰撞检测等工作</em></p>
+]]></content>
+      <categories>
+        <category>TCP/IP</category>
+      </categories>
+      <tags>
+        <tag>TCP/IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习笔记</title>
+    <url>/2020/08/21/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><h2 id="Cuda对应图"><a href="#Cuda对应图" class="headerlink" title="Cuda对应图"></a>Cuda对应图</h2><p><img data-src="/images/image-20200822111634528.png"></p>
+<h2 id="用Conda安装指定Cuda版本的Pytorch"><a href="#用Conda安装指定Cuda版本的Pytorch" class="headerlink" title="用Conda安装指定Cuda版本的Pytorch"></a>用Conda安装指定Cuda版本的Pytorch</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda install pytorch cudatoolkit=10.1 -c pytorch</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装多版本Cuda（用Pytorch框架不用安装Cuda）"><a href="#安装多版本Cuda（用Pytorch框架不用安装Cuda）" class="headerlink" title="安装多版本Cuda（用Pytorch框架不用安装Cuda）"></a>安装多版本Cuda（用Pytorch框架不用安装Cuda）</h2><h3 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 根据Cuda对应图下载指定版本的cuda，下载runfile文件,这里以10.1为例</span></span><br><span class="line">wget https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers/cuda_10.1.105_418.39_linux.run</span><br><span class="line"><span class="meta">#</span><span class="bash"> 赋予runfile执行权限</span></span><br><span class="line">sudo chmod a+x cuda_10.1.105_418.39_linux.run</span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行安装,记住装过驱动了就别装驱动了，选项可以根据自己的需要进行选择</span></span><br><span class="line">sudo ./cuda_10.1.105_418.39_linux.run</span><br><span class="line"><span class="meta">#</span><span class="bash"> 在用户主目录的.bashrc文件中添加（或修改成）以下两行，将执行库和cuda可执行文件写入环境变量</span></span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.1/lib64</span><br><span class="line">export PATH=$PATH:/usr/local/cuda-10.1/bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用软链接更方便切换版本"><a href="#使用软链接更方便切换版本" class="headerlink" title="使用软链接更方便切换版本"></a>使用软链接更方便切换版本</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 先将/usr/bin/cuda软链接指向指定版本</span></span><br><span class="line">sudo rm -f /usr/bin/cuda # 删除软链接</span><br><span class="line">sudo ln -s /usr/bin/cuda /usr/local/cuda-10.1 #重建软链接</span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改环境变量如下</span></span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64</span><br><span class="line">export PATH=$PATH:/usr/local/cuda-10.1/bin</span><br></pre></td></tr></table></figure>
+
+<p>每次切换版本只需要重建软链接就可以了。</p>
+<h1 id="训练技巧"><a href="#训练技巧" class="headerlink" title="训练技巧"></a>训练技巧</h1><h2 id="模型参数初始化"><a href="#模型参数初始化" class="headerlink" title="模型参数初始化"></a>模型参数初始化</h2><h3 id="普通梯度下降法（SGD-Batch梯度下降）"><a href="#普通梯度下降法（SGD-Batch梯度下降）" class="headerlink" title="普通梯度下降法（SGD,Batch梯度下降）"></a>普通梯度下降法（SGD,Batch梯度下降）</h3><p>使用普通的梯度下降方法时，初始化模型时对参数进行归一化，以防止不同参数的scale不一样，部分参数在同等学习率下无法更新</p>
+<h3 id="自适应学习率梯度下降法法（动量法，RMSprop算法，Adam算法）"><a href="#自适应学习率梯度下降法法（动量法，RMSprop算法，Adam算法）" class="headerlink" title="自适应学习率梯度下降法法（动量法，RMSprop算法，Adam算法）"></a>自适应学习率梯度下降法法（动量法，RMSprop算法，Adam算法）</h3><p>采用自适应学习率的梯度下降方法不需要对参数进行归一化，因为会根据不同scale的梯度进行学习率的缩放，最终稳步达到lLocal optimal</p>
+<h1 id="梯度下降优化方法"><a href="#梯度下降优化方法" class="headerlink" title="梯度下降优化方法"></a>梯度下降优化方法</h1><span id="more"></span>
+
+<h2 id="RMSprop算法"><a href="#RMSprop算法" class="headerlink" title="RMSprop算法"></a>RMSprop算法</h2><p>采用EMA（指数移动平均）来计算每次更新的梯度，公式如下：</p>
+<p><img data-src="/images/image-20200821184018405.png"></p>
+<p>其中$\beta$为衰减率，一般取0.9；$G_t$就是多次梯度的指数衰减平均，其中时间越接近当前的梯度权重越高，时间越早的梯度权重越低。</p>
+<p>其中参数更新差值（参数更新前后的差值，方向为负表示下降）计算如下：</p>
+<p><img data-src="/images/image-20200821184252804.png"></p>
+<p>其中$\alpha$为初始学习率，比如0.001； 迭代过程中每个参数的学习率随着$G_t$变化而变化，当EMA值较大时，学习率会变小，抑制更新，EMA值较小时，学习率会变大，加速更新，由此反复动态调节。</p>
+<h2 id="动量法"><a href="#动量法" class="headerlink" title="动量法"></a>动量法</h2><p>在物理上，动量是速度和质量的乘积，也就是和速度成正比；动量法就是用之前积累的动量代替真正的梯度，而把单词的梯度当作是梯度加速度。</p>
+<p>在第t次迭代时，计算负梯度的EMA作为参数的更新量：</p>
+<p><img data-src="/images/image-20200821185459974.png"></p>
+<p>其中$\rho$代表动量因子，通常为0.9，$\alpha$为学习率；</p>
+<p>每个参数的实际更新差值取决于最近一段时间内梯度的加权平均，当某个参数在最近一段时间的梯度方向不一致，其真实的参数更新幅度就会减小，起到减速作用，反之亦然。也就是说在反复震荡的时候可以减小梯度更新幅度（而不是学习率）增加了稳定性。</p>
+<h2 id="Adam（自适应动量估计）方法"><a href="#Adam（自适应动量估计）方法" class="headerlink" title="Adam（自适应动量估计）方法"></a>Adam（自适应动量估计）方法</h2><p>动量法和RMSprop的结合，不仅用动量作为参数更新量，而且可以自适应调整学习率。</p>
+<p>公式如下：</p>
+<p><img data-src="/images/image-20200821190336932.png" alt=" "></p>
+<p><img data-src="/images/image-20200821190349443.png" alt=" "></p>
+<p>其中$\beta_1$和$\beta_2$分别为两个移动平均的衰减，通常取值为0.9和0.99，$M_t$为参数更新量，$G_t$为学习率衰减系数。</p>
+<p>一般$M_0$和$G_0$一般都设置为0， 迭代初期$M_t$和$G_t$的值跟真实均值和方差相差较大，被系数缩小了很多（特别是$\beta$接近1的时候），可通过以下公式进行修正：</p>
+<p><img data-src="/images/image-20200821190921992.png"></p>
+<p>随着时间的累积，分母趋近为1，两值之间的差距基本上可以无视。</p>
+<p>Adam算法的参数更新差值为：</p>
+<p><img data-src="/images/image-20200821190951174.png" alt=" "></p>
+<p>其中学习率通常设置为0.001。</p>
+<h1 id="参考文献："><a href="#参考文献：" class="headerlink" title="参考文献："></a>参考文献：</h1><p>《神经网络与深度学习》 – 邱锡鹏</p>
+]]></content>
+      <categories>
+        <category>deeplearning</category>
+      </categories>
+      <tags>
+        <tag>deeplearning</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据结构与算法知识点整理</title>
+    <url>/2021/07/12/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E4%B8%93%E4%B8%9A%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<h3 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h3><h4 id="基础结构"><a href="#基础结构" class="headerlink" title="基础结构"></a>基础结构</h4><h5 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h5><h5 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h5><h5 id="Trie树"><a href="#Trie树" class="headerlink" title="Trie树"></a>Trie树</h5><h4 id="基本算法"><a href="#基本算法" class="headerlink" title="基本算法"></a>基本算法</h4><h5 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h5><ul>
+<li>快慢指针</li>
+</ul>
+<h5 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h5><h5 id="分治"><a href="#分治" class="headerlink" title="分治"></a>分治</h5><h5 id="贪心"><a href="#贪心" class="headerlink" title="贪心"></a>贪心</h5><h5 id="动规"><a href="#动规" class="headerlink" title="动规"></a>动规</h5><h6 id="基本dp"><a href="#基本dp" class="headerlink" title="基本dp"></a>基本dp</h6><h6 id="状态压缩dp"><a href="#状态压缩dp" class="headerlink" title="状态压缩dp"></a>状态压缩dp</h6><h6 id="树形dp"><a href="#树形dp" class="headerlink" title="树形dp"></a>树形dp</h6><span id="more"></span>
+
+<h5 id="图论"><a href="#图论" class="headerlink" title="图论"></a>图论</h5><h6 id="基本数据结构"><a href="#基本数据结构" class="headerlink" title="基本数据结构"></a>基本数据结构</h6><ul>
+<li>邻接表<ul>
+<li>适用于稀疏图</li>
+<li>适用于需要遍历边的情况</li>
+</ul>
+</li>
+<li>邻接矩阵<ul>
+<li>适用于稠密图</li>
+<li>适用于需要快速获取两点之间权值的情况</li>
+</ul>
+</li>
+</ul>
+<h6 id="基础算法"><a href="#基础算法" class="headerlink" title="基础算法"></a>基础算法</h6><ul>
+<li>BFS</li>
+<li>DFS</li>
+</ul>
+<h6 id="最短路径"><a href="#最短路径" class="headerlink" title="最短路径"></a>最短路径</h6><ul>
+<li><p>单源无权最短路径</p>
+<ul>
+<li>BFS</li>
+</ul>
+</li>
+<li><p>单源带权最短路径</p>
+<ul>
+<li><p>对于有负环的有向图，一定无法通过传统算法找到最短路径，路径可以一直减少到负无穷（一直在环内循环）</p>
+</li>
+<li><p>对于有负权边的无向图，也一定无法通过传统算法找到最短路径，因为无向图向有向图（转换为双向有向图）转变时会产生负环</p>
+</li>
+<li><p>Dijkstra算法</p>
+<ul>
+<li><p>原理</p>
+<ul>
+<li>贪心思想，采用优先队列，每次从加入点集的顶点中取出代价最小的点，将其从优先队列弹出，且标记为visit， 并用该点松弛与该顶点直接连接的顶点，如果可以被松弛且visit标志不为true，则加入优先队列中</li>
+</ul>
+</li>
+<li><p>特点</p>
+<ul>
+<li>每一次优先队列的弹出操作都已经找到了起点到弹出点的最短路径，所以最多弹出n 次（实际上由于点可能会被重复添加，故最差应该等于边数）即可找到起点到所有点的最短路径</li>
+</ul>
+</li>
+<li><p>时间复杂度</p>
+<ul>
+<li>顶点可能被添加到优先队列中的次数最多为边数，因为每条边最多被访问两次，故为O(ElogE)，此时每次要判断当前弹出节点对应的权值是否已经被确定为最优，如果已经被确定了则跳过</li>
+<li>实际上在手动实现优先队列时能达到IO(ElogV)，用unordered_map存储节点在优先队列中的索引，再通过索引更新权值，更新之后再更新unordered_map中对应的索引</li>
+</ul>
+</li>
+<li><p>适用性</p>
+<ul>
+<li>该算法只适用没有负权的带权最短路径问题</li>
+<li>对于带有负权边的有向无环图（DAG），可以使用可重入的Dijkstra算法，即不用visit数组表示该点是否已经被确定为最优，只要可以松弛即加入优先队列，一直到队列为空，此时对于带有负环的有向图，则会无限循环，此时可以根据某个点加入队列的次数判断是否有环（一个节点进入队列n次一定有环，因为n次松弛在有向无环图中代表经过了n个节点，节点最多有n个）</li>
+</ul>
+</li>
+<li><p>算法实现（基于C++ STL的priority_queue）</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include&lt;bits/stdc++.h&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()&#123;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Bellman-Ford</p>
+<ul>
+<li>原理<ul>
+<li>n个节点最多被松弛n次即可达到最短路径</li>
+</ul>
+</li>
+<li>特点<ul>
+<li>采用n次循环的方式遍历每一条边，当遍历完成即可得到源点到所有点的最短路径，因为每次松弛都可以得到最短路径上的一个节点， 而一条最短路径最多经过n个节点</li>
+<li>在有负权边的有向无环图中变现良好</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>SPFA</p>
+<ul>
+<li>原理<ul>
+<li>优化的Bellman-Ford，只将松驰过的节点加入到队列中，因为本次如果没有松弛该节点，则该节点就是被松弛过且已经使用该节点松驰过其他节点，再次加入队列没有意义；其中对于队列中已经存在的节点只做松弛，不加入队列，因为队列中放的是点集，松弛即更新dist数组，则弹出该节点就用的是最新的权值</li>
+</ul>
+</li>
+<li>特点<ul>
+<li>在有负权边的有向无环图中变现良好</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>多源带权最短路径</p>
+<ul>
+<li>Floyd-Warshall</li>
+</ul>
+</li>
+</ul>
+<h6 id="关键路径"><a href="#关键路径" class="headerlink" title="关键路径"></a>关键路径</h6><ul>
+<li>待学习</li>
+</ul>
+<h6 id="连通性"><a href="#连通性" class="headerlink" title="连通性"></a>连通性</h6><ul>
+<li>并查集</li>
+</ul>
+<h6 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h6><ul>
+<li>Prim</li>
+<li>Kruskal</li>
+</ul>
+<h6 id="AOE-AOV网"><a href="#AOE-AOV网" class="headerlink" title="AOE/AOV网"></a>AOE/AOV网</h6><ul>
+<li>拓扑排序</li>
+</ul>
+<h6 id="最大流及费用最大流"><a href="#最大流及费用最大流" class="headerlink" title="最大流及费用最大流"></a>最大流及费用最大流</h6><ul>
+<li>待学习</li>
+</ul>
+<h4 id="进阶算法"><a href="#进阶算法" class="headerlink" title="进阶算法"></a>进阶算法</h4><ul>
+<li>原地hash</li>
+<li>AC自动机</li>
+<li>树状数组</li>
+<li>KMP</li>
+<li>快速幂</li>
+<li>单调栈</li>
+<li>单调队列</li>
+<li>线段树</li>
+<li>扫描线</li>
+<li>马拉车算法（Manacher‘s Algorithm）</li>
+<li>埃氏筛法（筛素数的算法）</li>
+<li>最小表示法<h4 id="进阶知识"><a href="#进阶知识" class="headerlink" title="进阶知识"></a>进阶知识</h4></li>
+<li>a mod m的乘法逆元是 \({a ^ {m - 2}}\)，其中m为质数</li>
+<li>多重集合的排列组合是 \(\frac{n!}{(n1! * n2!)}\)，其中n1是第一种元素的个数，n是总元素个数<h4 id="推荐链接"><a href="#推荐链接" class="headerlink" title="推荐链接"></a>推荐链接</h4><a href="https://books.halfrost.com/leetcode/ChapterOne/">leetcode算法笔记</a><br><a href="https://oi-wiki.org/">算法wiki</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>数据结构与算法</tag>
+      </tags>
+  </entry>
+</search>
