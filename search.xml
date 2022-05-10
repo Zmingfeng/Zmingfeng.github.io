@@ -871,7 +871,7 @@
 <li><p>算法实现（基于C++ STL的priority_queue）</p>
 </li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include&lt;bits/stdc++.h&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()&#123;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include&lt;bits/stdc++.h&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()&#123;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 <li><p>Bellman-Ford</p>
 <ul>
 <li>原理<ul>
@@ -922,20 +922,35 @@
 <li>待学习</li>
 </ul>
 <h4 id="进阶算法"><a href="#进阶算法" class="headerlink" title="进阶算法"></a>进阶算法</h4><ul>
-<li>原地hash</li>
-<li>AC自动机</li>
-<li>树状数组</li>
-<li>KMP</li>
-<li>快速幂</li>
-<li>单调栈</li>
-<li>单调队列</li>
-<li>线段树</li>
-<li>扫描线</li>
-<li>马拉车算法（Manacher‘s Algorithm）</li>
-<li>埃氏筛法（筛素数的算法）</li>
-<li>最小表示法<h4 id="进阶知识"><a href="#进阶知识" class="headerlink" title="进阶知识"></a>进阶知识</h4></li>
-<li>a mod m的乘法逆元是 \({a ^ {m - 2}}\)，其中m为质数</li>
-<li>多重集合的排列组合是 \(\frac{n!}{(n1! * n2!)}\)，其中n1是第一种元素的个数，n是总元素个数<h4 id="推荐链接"><a href="#推荐链接" class="headerlink" title="推荐链接"></a>推荐链接</h4><a href="https://books.halfrost.com/leetcode/ChapterOne/">leetcode算法笔记</a><br><a href="https://oi-wiki.org/">算法wiki</a></li>
+<li><p>原地hash</p>
+</li>
+<li><p>AC自动机</p>
+</li>
+<li><p>树状数组</p>
+</li>
+<li><p>KMP</p>
+</li>
+<li><p>快速幂</p>
+</li>
+<li><p>单调栈</p>
+</li>
+<li><p>单调队列</p>
+</li>
+<li><p>线段树</p>
+</li>
+<li><p>扫描线</p>
+</li>
+<li><p>马拉车算法（Manacher‘s Algorithm）</p>
+</li>
+<li><p>埃氏筛法（筛素数的算法）</p>
+</li>
+<li><p>最小表示法</p>
+<h4 id="进阶知识"><a href="#进阶知识" class="headerlink" title="进阶知识"></a>进阶知识</h4></li>
+<li><p>a mod m的乘法逆元是 \({a ^ {m - 2}}\)，其中m为质数</p>
+</li>
+<li><p>多重集合的排列组合是 \(\frac{n!}{(n1! * n2!)}\)，其中n1是第一种元素的个数，n是总元素个数</p>
+<h4 id="推荐链接"><a href="#推荐链接" class="headerlink" title="推荐链接"></a>推荐链接</h4><p><a href="https://books.halfrost.com/leetcode/ChapterOne/">leetcode算法笔记</a><br><a href="https://oi-wiki.org/">算法wiki</a></p>
+</li>
 </ul>
 ]]></content>
       <categories>
