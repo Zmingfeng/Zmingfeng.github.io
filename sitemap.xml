@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/schedule/index.html</loc>
+    
+    <lastmod>2023-06-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/index.html</loc>
+    
+    <lastmod>2023-06-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2018/03/17/C++%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/</loc>
     
     <lastmod>2023-06-26</lastmod>
@@ -101,6 +119,15 @@
   </url>
   
   <url>
+    <loc>http://yoursite.com/404/index.html</loc>
+    
+    <lastmod>2023-06-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/about/index.html</loc>
     
     <lastmod>2023-06-26</lastmod>
@@ -120,33 +147,6 @@
   
   <url>
     <loc>http://yoursite.com/categories/index.html</loc>
-    
-    <lastmod>2023-06-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/schedule/index.html</loc>
-    
-    <lastmod>2023-06-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/index.html</loc>
-    
-    <lastmod>2023-06-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/404/index.html</loc>
     
     <lastmod>2023-06-26</lastmod>
     
