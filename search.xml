@@ -779,7 +779,7 @@
 <h2 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h2><blockquote>
 <p>技术是工具，掌握学习新技术，以及使用新技术的方法更重要，当然深厚的计算机基础以及广泛的涉猎是必须的</p>
 </blockquote>
-<h4 id="如何学好技术"><a href="#如何学好技术" class="headerlink" title="如何学好技术"></a>如何学好技术</h4><blockquote>
+<h3 id="如何学好技术"><a href="#如何学好技术" class="headerlink" title="如何学好技术"></a>如何学好技术</h3><blockquote>
 <p>博观而约取，厚积而薄发</p>
 </blockquote>
 <ul>
@@ -814,10 +814,12 @@
 </ul>
 </li>
 </ul>
+<span id="more"></span>
+
 <h2 id="英语"><a href="#英语" class="headerlink" title="英语"></a>英语</h2><blockquote>
 <p>对于技术人员来说，英语的重要性不言而喻，前沿技术以及高质量问答大多都来源于英文网站</p>
 </blockquote>
-<h4 id="如何学习英语"><a href="#如何学习英语" class="headerlink" title="如何学习英语"></a>如何学习英语</h4><ul>
+<h3 id="如何学习英语"><a href="#如何学习英语" class="headerlink" title="如何学习英语"></a>如何学习英语</h3><ul>
 <li><p>听</p>
 <ul>
 <li>利用空闲时间看美剧听美剧，不看字幕，培养语感，不追求在心中翻译成中文，直接像理解母语一样理解英文</li>
@@ -850,10 +852,10 @@
 </ul>
 ]]></content>
       <categories>
-        <category>工作</category>
+        <category>学习</category>
       </categories>
       <tags>
-        <tag>工作</tag>
+        <tag>思考</tag>
         <tag>技术</tag>
         <tag>学习</tag>
         <tag>英语</tag>
