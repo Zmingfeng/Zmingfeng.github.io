@@ -1,3 +1,5 @@
+http://yoursite.com/schedule/index.html
+http://yoursite.com/tags/index.html
 http://yoursite.com/2018/03/17/C++%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/
 http://yoursite.com/2018/08/28/C++%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88/
 http://yoursite.com/2021/04/18/C++%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/
@@ -12,8 +14,6 @@ http://yoursite.com/404/index.html
 http://yoursite.com/about/index.html
 http://yoursite.com/archives/index.html
 http://yoursite.com/categories/index.html
-http://yoursite.com/schedule/index.html
-http://yoursite.com/tags/index.html
 http://yoursite.com/
 http://yoursite.com/tags/C/
 http://yoursite.com/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91/
